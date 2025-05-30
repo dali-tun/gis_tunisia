@@ -1,0 +1,89 @@
+html, body{
+    height:100%;
+    margin:0;
+    font-family:Arial, sans-serif;
+    background:#f0f4f8;
+  }
+  
+  #layout{
+    display:flex;
+    flex-direction:row;
+    flex-wrap:nowrap;
+    height:100vh;
+    overflow:hidden;
+  }
+  
+  #charts{
+    flex:0 0 380px;
+    padding:10px;
+    background:#fafafa;
+    box-shadow:2px 0 6px rgba(0,0,0,.08);
+    box-sizing:border-box;
+    overflow-y:auto;
+  }
+  #charts canvas{
+    width:100%!important;
+    height:calc(50vh - 60px)!important;
+    margin-bottom:20px;
+  }
+  
+  #map{
+    flex:1 1 auto;
+    min-width:0;
+  }
+  
+  #info{
+    position:absolute;
+    bottom:0; left:0; right:0;
+    height:30vh;
+    background:#fff;
+    padding:16px;
+    overflow-y:auto;
+    box-shadow:0 -4px 8px rgba(0,0,0,.1);
+    z-index:1000;
+  }
+  
+  table{
+    width:100%;
+    border-collapse:collapse;
+    font-size:14px;
+  }
+  table,th,td{
+    border:1px solid #ddd;
+  }
+  th,td{
+    padding:6px 8px;
+    text-align:center;
+  }
+  th{
+    background:#007bff;
+    color:#fff;
+  }
+  tr:nth-child(even){
+    background:#f9f9f9;
+  }
+  
+  /* Legend styling */
+  .info.legend {
+    background:white;
+    padding:6px;
+    border-radius:6px;
+    line-height:18px;
+    box-shadow:0 0 8px rgba(0,0,0,.2);
+  }
+
+  #filters {
+    position:absolute;
+    top:10px;
+    left:400px; /* adapté à la largeur de ta colonne charts */
+    z-index:1000;
+    border-radius:5px;
+  }
+  #filters select,#filters button{
+    padding:5px 10px;
+    font-size:14px;
+    margin-right:5px;
+    border-radius:3px;
+    border:1px solid #ccc;
+  }
+  

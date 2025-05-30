@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8" />
+  <title>Carte Interactive Secteurs Tunisie</title>
+
+  <!-- Style perso -->
+  <link rel="stylesheet" href="styles.css" />
+
+  <!-- Leaflet -->
+  <link rel="stylesheet"
+        href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+
+  <!-- Leaflet-Control-Search -->
+  <link rel="stylesheet"
+        href="https://cdn.jsdelivr.net/npm/leaflet-control-search@2.9.8/dist/leaflet-search.min.css" />
+  <script src="https://cdn.jsdelivr.net/npm/leaflet-control-search@2.9.8/dist/leaflet-search.min.js"></script>
+
+  <!-- Chart.js -->
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+
+<body>
+  <div id="layout">
+    <!-- Colonne graphiques -->
+    <div id="charts">
+      <div id="summary"
+           style="margin-bottom:15px;padding:10px;background:#e9eff7;text-align:center;">
+        <strong id="totalPop">Population totale : —</strong><br/>
+        <strong id="ratioHF">Ratio H/F : —</strong><br/>
+        <strong id="avgAge">Âge moyen : —</strong><br/>
+        <strong id="medAge">Âge médian : —</strong>
+      </div>
+
+      <canvas id="maleChart"></canvas>
+      <canvas id="femaleChart"></canvas>
+    </div>
+
+    <!-- Filtres -->
+    <div id="filters"
+         style="position:absolute;top:10px;left:400px;z-index:1000;padding:6px;background:#fff;box-shadow:0 4px 6px rgba(0,0,0,.1);border-radius:4px;">
+      <select id="ageFilter">
+        <option value="">📌 Choisir un filtre</option>
+        <option value="jeunes">Majorité jeunes (&lt; 40 ans)</option>
+        <option value="vieux">Majorité vieux (≥ 40 ans)</option>
+        <option value="femmes">Majorité femmes</option>
+        <option value="hommes">Majorité hommes</option>
+      </select>
+      <button id="resetFilter">Réinitialiser</button>
+    </div>
+
+    <!-- Carte -->
+    <div id="map"></div>
+  </div>
+
+  <!-- Script principal -->
+  <script src="main.js"></script>
+</body>
+</html>
