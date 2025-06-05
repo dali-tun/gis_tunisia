@@ -1,61 +1,66 @@
 <!DOCTYPE html>
 <html lang="fr">
-
 <head>
-  <meta charset="UTF-8" />
-  <title>Carte Interactive Secteurs Tunisie</title>
+  <meta charset="UTF-8">
+  <title>Carte Interactive – Densité & Âge moyen</title>
 
-  <!-- Style perso -->
-  <link rel="stylesheet" href="styles.css" />
+  <!-- Feuilles de style perso -->
+  <link rel="stylesheet" href="styles.css"/>
 
-  <!-- Leaflet -->
-  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+  <!-- Leaflet & plugin Search -->
+  <link rel="stylesheet"
+        href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"/>
+  <link rel="stylesheet"
+        href="https://unpkg.com/leaflet-search@2.9.8/dist/leaflet-search.min.css"/>
+
   <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+  <script src="https://unpkg.com/leaflet-search@2.9.8/dist/leaflet-search.min.js"></script>
 
-  <!-- Leaflet-Control-Search -->
-  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/leaflet-control-search@2.9.8/dist/leaflet-search.min.css" />
-  <script src="https://cdn.jsdelivr.net/npm/leaflet-control-search@2.9.8/dist/leaflet-search.min.js"></script>
-
-  <!-- Chart.js -->
+  <!-- Chart.js + plugin datalabels -->
   <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-  <!-- Plugin pour afficher le nombre au-dessus de chaque barre -->
   <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-datalabels@2"></script>
 </head>
 
 <body>
   <div id="layout">
-    <!-- Colonne graphiques -->
+    <!-- colonne graphiques -->
     <div id="charts">
-      <div id="summary" style="margin-bottom:15px;padding:10px;background:#e9eff7;text-align:center;">
-        <strong id="totalPop">Population totale : —</strong><br />
-        <strong id="ratioHF">Ratio H/F : —</strong><br />
-        <strong id="avgAge">Âge moyen : —</strong><br />
-        <strong id="medAge">Âge médian : —</strong>
+      <div id="summary">
+        <strong id="totalPop">Population totale : —</strong><br>
+        <strong id="ratioHF">Ratio H/F : —</strong><br>
+        <strong id="avgAge">Âge moyen : —</strong><br>
+        <strong id="medAge">Âge médian : —</strong><br>
+        <strong id="densLine">Densité : —</strong>
       </div>
-
       <canvas id="maleChart"></canvas>
       <canvas id="femaleChart"></canvas>
     </div>
 
-    <!-- Filtres -->
+    <!-- filtres & sélecteur de coloration -->
     <div id="filters"
-      style="position:absolute;top:10px;left:400px;z-index:1000;padding:6px;background:#fff;box-shadow:0 4px 6px rgba(0,0,0,.1);border-radius:4px;">
+         style="position:absolute;top:10px;left:400px;z-index:1000;
+                padding:8px;background:#fff;box-shadow:0 4px 6px rgba(0,0,0,.15);
+                border-radius:5px;font-family:Arial">
+      <select id="colorMode">
+        <option value="density">Colorier : densité</option>
+        <option value="avgAge">Colorier : âge moyen</option>
+      </select>
+      <br><br>
       <select id="ageFilter">
-        <option value="">📌 Choisir un filtre</option>
-        <option value="jeunes">Majorité jeunes (&lt; 40 ans)</option>
-        <option value="vieux">Majorité vieux (≥ 40 ans)</option>
+        <option value="">📌 Filtrer par âge</option>
+        <option value="jeunes">Majorité jeunes</option>
+        <option value="vieux">Majorité seniors</option>
         <option value="femmes">Majorité femmes</option>
         <option value="hommes">Majorité hommes</option>
       </select>
       <button id="resetFilter">Réinitialiser</button>
     </div>
 
-    <!-- Carte -->
+    <!-- carte -->
     <div id="map"></div>
   </div>
 
-  <!-- Script principal -->
+  <!-- script principal -->
   <script src="main.js"></script>
 </body>
-
 </html>
