@@ -1,0 +1,153 @@
+/* ——— Police moderne ——— */
+@import url("https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap");
+
+html, body {
+  height: 100%;
+  margin: 0;
+  font-family: "Inter", Arial, sans-serif;
+  background: #f0f4f8;
+}
+#layout {
+  display: flex;
+  height: 100vh;
+  overflow: hidden;
+}
+
+/* —— Colonne de gauche —— */
+#charts {
+  flex: 0 0 500px;
+  max-width: 500px;
+  background: #fcfcfd;
+  box-shadow: 2px 0 8px rgba(0,0,0,.06);
+  padding: 14px;
+  box-sizing: border-box;
+  overflow-y: auto;
+}
+
+/* —— Container graphique —— */
+.chart-container {
+  display: block;
+  width: 100%;
+  height: 300px;      /* ajuster si besoin */
+  margin-bottom: 24px;
+  clear: both;
+}
+.chart-container canvas {
+  width: 100% !important;
+  height: 100% !important;
+  display: block;
+}
+
+/* —— Container tableau —— */
+.table-container {
+  display: block;
+  width: 100%;
+  margin-top: 24px;
+  clear: both;
+}
+
+/* —— Cadre général du panel info —— */
+#info {
+  background: #fff;
+  padding: 14px;
+  border: 1px solid #e0e0e0;
+  border-radius: 6px;
+  box-shadow: 0 2px 6px rgba(0,0,0,.04);
+}
+
+/* —— Styles du tableau —— */
+table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 14px;
+}
+table, th, td {
+  border: 1px solid #e5e7eb;
+}
+th, td {
+  padding: 6px 8px;
+  text-align: center;
+}
+th {
+  background: #0069d9;
+  color: #fff;
+  font-weight: 600;
+}
+tr:nth-child(even) {
+  background: #f5f7fa;
+}
+
+/* —— Zone carte —— */
+#map {
+  flex: 1 1 auto;
+  min-width: 0;
+}
+
+/* —— Filtres —— */
+#filters {
+  position: absolute;
+  top: 10px;
+  left: 500px;   /* pile à droite de #charts (500px) */
+  z-index: 1000;
+}
+#filters select,
+#filters button {
+  padding: 6px 12px;
+  font-size: 14px;
+  margin-right: 6px;
+  border-radius: 4px;
+  border: 1px solid #ccc;
+  background: #fff;
+}
+
+/* —— Légende Leaflet —— */
+.info.legend {
+  background: #fff;
+  padding: 8px 10px;
+  border-radius: 6px;
+  line-height: 20px;
+  font-size: 13px;
+  box-shadow: 0 0 8px rgba(0,0,0,.2);
+}
+
+/* —— Tooltip sombre —— */
+.leaflet-tooltip-dark {
+  background: #111;
+  color: #fff;
+  border: 1px solid #555;
+  padding: 6px;
+  font-size: 13px;
+  border-radius: 3px;
+}
+
+/* —— Label gouvernorat —— */
+.gov-label {
+  font: 600 14px "Inter", sans-serif;
+  color: #fff;
+  text-shadow: 0 0 4px #000;
+  pointer-events: none;
+}
+
+/* —— Sélection active —— */
+.selected {
+  stroke: #ffd54f !important;
+  stroke-width: 3 !important;
+  filter: drop-shadow(0 0 5px #000);
+}
+
+/* —— Panneaux additionnels —— */
+.indicators { display: flex; justify-content: space-around; margin-top: 10px; }
+.indicator { text-align: center; padding: 8px; }
+.indicator-value { font-size: 18px; font-weight: bold; color: #0069d9; }
+.indicator-label { font-size: 12px; color: #6c757d; }
+.panel-body { padding: 15px; overflow-y: auto; max-height: 400px; }
+
+/* —— Barre de progression —— */
+.progress-bar { height: 10px; background: #e9ecef; border-radius: 5px; overflow: hidden; margin-bottom: 8px; }
+.progress-fill { height: 100%; background: #0069d9; }
+
+/* —— Ratio par genre —— */
+.gender-ratio { display: flex; justify-content: space-around; }
+.gender { padding: 5px 10px; border-radius: 4px; font-weight: bold; }
+.gender.male   { background: #d1ecff; color: #004085; }
+.gender.female { background: #f8d7da; color: #721c24; }

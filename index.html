@@ -1,66 +1,60 @@
 <!DOCTYPE html>
 <html lang="fr">
 <head>
-  <meta charset="UTF-8">
-  <title>Carte Interactive – Densité & Âge moyen</title>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>Tunisie – Carte démographique</title>
 
-  <!-- Feuilles de style perso -->
-  <link rel="stylesheet" href="styles.css"/>
-
-  <!-- Leaflet & plugin Search -->
-  <link rel="stylesheet"
-        href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"/>
-  <link rel="stylesheet"
-        href="https://unpkg.com/leaflet-search@2.9.8/dist/leaflet-search.min.css"/>
-
+  <!-- Leaflet -->
+  <link
+    rel="stylesheet"
+    href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
+  />
   <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
-  <script src="https://unpkg.com/leaflet-search@2.9.8/dist/leaflet-search.min.js"></script>
 
-  <!-- Chart.js + plugin datalabels -->
+  <!-- Chart.js -->
   <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-  <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-datalabels@2"></script>
+
+  <!-- Styles -->
+  <link rel="stylesheet" href="style.css">
 </head>
 
 <body>
   <div id="layout">
-    <!-- colonne graphiques -->
     <div id="charts">
-      <div id="summary">
-        <strong id="totalPop">Population totale : —</strong><br>
-        <strong id="ratioHF">Ratio H/F : —</strong><br>
-        <strong id="avgAge">Âge moyen : —</strong><br>
-        <strong id="medAge">Âge médian : —</strong><br>
-        <strong id="densLine">Densité : —</strong>
+      <!-- Le script main.js injectera ici :
+           <div class="chart-container"><canvas id="ageChart"></canvas></div>
+           puis
+           <div id="table-container" class="table-container panel-body">…</div>
+      -->
+      <div id="info">
+        <p style="opacity:.7">Survolez ou cliquez…</p>
       </div>
-      <canvas id="maleChart"></canvas>
-      <canvas id="femaleChart"></canvas>
     </div>
-
-    <!-- filtres & sélecteur de coloration -->
-    <div id="filters"
-         style="position:absolute;top:10px;left:400px;z-index:1000;
-                padding:8px;background:#fff;box-shadow:0 4px 6px rgba(0,0,0,.15);
-                border-radius:5px;font-family:Arial">
-      <select id="colorMode">
-        <option value="density">Colorier : densité</option>
-        <option value="avgAge">Colorier : âge moyen</option>
-      </select>
-      <br><br>
-      <select id="ageFilter">
-        <option value="">📌 Filtrer par âge</option>
-        <option value="jeunes">Majorité jeunes</option>
-        <option value="vieux">Majorité seniors</option>
-        <option value="femmes">Majorité femmes</option>
-        <option value="hommes">Majorité hommes</option>
-      </select>
-      <button id="resetFilter">Réinitialiser</button>
-    </div>
-
-    <!-- carte -->
     <div id="map"></div>
   </div>
 
-  <!-- script principal -->
+  <!-- Filtres -->
+  <div id="filters">
+    <select id="levelSel">
+      <option value="gov">Niveau : gouvernorats</option>
+      <option value="del">Niveau : délégations</option>
+      <option value="sec">Niveau : secteurs</option>
+    </select>
+    <select id="colorSel">
+      <option value="density">Colorier : densité</option>
+      <option value="age">Colorier : âge médian</option>
+    </select>
+    <select id="ageFil">
+      <option value="">Filtrer par âge</option>
+      <option value="jeunes">Majorité jeunes</option>
+      <option value="vieux">Majorité seniors</option>
+      <option value="femmes">Majorité féminine</option>
+      <option value="hommes">Majorité masculine</option>
+    </select>
+    <button id="resetFil">Réinitialiser</button>
+  </div>
+
   <script src="main.js"></script>
 </body>
 </html>
