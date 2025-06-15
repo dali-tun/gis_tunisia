@@ -1,13 +1,13 @@
-/* ui.js — interactions principales */
+/* ui.js — interactions principales (version responsive + loader) */
 import { female, male, safe } from './utils.js';
 import { palAge, youngBands } from './constants.js';
 import { state }              from './state.js';
 import { mkLayer, styleOf }   from './mapLayers.js';
 import { mkDens }             from './loader.js';
 
-/* ------------------------------------------------------------
-   Utilitaire : remet un LayerGroup en cohérence avec l’état
------------------------------------------------------------- */
+/*--------------------------------------------------
+  Utilitaires
+--------------------------------------------------*/
 function refreshLayer(group) {
   group.eachLayer(l => {
     l.options._base = styleOf(l.feature, l.options._top);
@@ -15,39 +15,40 @@ function refreshLayer(group) {
     if (l !== state.selected && l._path) l._path.classList.remove('selected');
   });
 }
+const showLoader = (txt = 'Chargement…') => window.showLoader?.(txt);
+const hideLoader = ()                    => window.hideLoader?.();
 
-/* ------------------------------------------------------------
-   Point d’entrée (appelé par main.js)
------------------------------------------------------------- */
+/*--------------------------------------------------
+  Point d’entrée (appelé par main.js)
+--------------------------------------------------*/
 export function buildUI(gov, del, sec) {
+  /* ===== Initialisation état global ===== */
+  state.level = 'gov';
+  state.mode = 'density';
 
-  /* ===== CARTE ===== */
-  const map = L.map('map', { attributionControl: false })
-               .setView([34, 9], 7);
-
+  /* ===== Carte ===== */
+  const map = L.map('map', { attributionControl: false }).setView([34, 9], 7);
   L.tileLayer(
     'https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png',
     { attribution: '© OSM / Carto' }
   ).addTo(map);
-
-  /* ===== PAL. DENSITÉ INITIALE ===== */
   state.densCls = mkDens(gov.features);
 
-  /* ===== LÉGENDE ===== */
+  /* ===== Légende ===== */
   const legend = L.control({ position: 'bottomleft' });
   legend.onAdd = () => {
-    const div = L.DomUtil.create('div', 'info legend');
-    Object.assign(div.style, {
+    const d = L.DomUtil.create('div', 'info legend');
+    Object.assign(d.style, {
       background: 'rgba(255,255,255,.85)',
       padding: '10px',
       borderRadius: '6px',
       boxShadow: '0 0 10px rgba(0,0,0,.2)'
     });
-    return div;
+    return d;
   };
   legend.addTo(map);
 
-  function renderLegend() {
+  function drawLegend() {
     const c = legend.getContainer();
     c.innerHTML = '';
 
@@ -60,8 +61,7 @@ export function buildUI(gov, del, sec) {
         c.insertAdjacentHTML(
           'beforeend',
           `<div style="display:flex;align-items:center;margin-bottom:5px">
-             <div style="width:20px;height:20px;background:${b.col};
-                         border:1px solid #555;margin-right:8px"></div>
+             <div style="width:20px;height:20px;background:${b.col};border:1px solid #555;margin-right:8px"></div>
              <div>
                <div style="font-size:14px">${b.lab}</div>
                <div style="font-size:12px;color:#666">${b.desc}</div>
@@ -84,8 +84,7 @@ export function buildUI(gov, del, sec) {
         c.insertAdjacentHTML(
           'beforeend',
           `<div style="display:flex;align-items:center;margin-bottom:5px">
-             <div style="width:20px;height:20px;background:${i.col};
-                         border:1px solid #555;margin-right:8px"></div>
+             <div style="width:20px;height:20px;background:${i.col};border:1px solid #555;margin-right:8px"></div>
              <div>
                <div style="font-size:14px">${i.lab}</div>
                <div style="font-size:12px;color:#666">${i.desc}</div>
@@ -101,7 +100,7 @@ export function buildUI(gov, del, sec) {
     );
   }
 
-  /* ===== COUCHES VECTORIELLES ===== */
+  /* ===== Couches vectorielles ===== */
   const tooltip = p =>
     `<b>${p.LABEL}</b><br>Population : ${p.POPTOT.toLocaleString()}<br>` +
     `Densité : ${safe(p.DENSITY)} hab/km²<br>Âge médian : ${safe(p.MED_AGE)} ans`;
@@ -113,10 +112,7 @@ export function buildUI(gov, del, sec) {
     }
     state.selected = layer;
     if (layer._path) layer._path.classList.add('selected');
-
     updatePanel(feature.properties);
-    const z = state.level === 'gov' ? 8 : state.level === 'del' ? 10 : 12;
-    map.setView(layer.getBounds().getCenter(), z);
   };
 
   const lyrGov = mkLayer(gov.features, true,  tooltip, onSelect).addTo(map);
@@ -126,22 +122,31 @@ export function buildUI(gov, del, sec) {
   /* Labels gouvernorats */
   const gLab = L.layerGroup();
   gov.features.forEach(f => {
-    const center = L.geoJSON(f).getBounds().getCenter();
-    L.marker(center, {
-      icon: L.divIcon({ className: 'gov-label', html: f.properties.LABEL })
+    const c = L.geoJSON(f).getBounds().getCenter();
+    L.marker(c, { 
+      icon: L.divIcon({ 
+        className: 'gov-label', 
+        html: f.properties.LABEL 
+      }) 
     }).addTo(gLab);
   });
   map.addLayer(gLab);
 
-  /* ===== PANNEAU INFO ===== */
+  /* ===== Panneau info ===== */
   const box   = document.getElementById('info');
   let   chart = null;
 
   function updatePanel(p) {
     if (chart) { chart.destroy(); chart = null; }
+    
+    /* Cas aucune sélection */
+    if (!p) {
+      box.innerHTML = '<div class="panel-header"><h3>Aucune sélection</h3></div>';
+      return;
+    }
 
-    /* --- cas simple : pas de DIST --- */
-    if (!p || !Object.keys(p.DIST).length) {
+    /* Pas de distribution d’âge ? */
+    if (!p.DIST || !Object.keys(p.DIST).length) {
       box.innerHTML =
         `<div style="text-align:center;padding:20px;color:#666">
            <h3 style="margin:0">${p.LABEL}</h3>
@@ -153,7 +158,7 @@ export function buildUI(gov, del, sec) {
       return;
     }
 
-    /* --- détail avec histogramme & tableau --- */
+    /* Détail complet */
     box.innerHTML =
       `<div class="panel-header">
          <h3>${p.LABEL}</h3>
@@ -175,113 +180,65 @@ export function buildUI(gov, del, sec) {
        <div class="chart-container" style="height:300px"><canvas id="ageChart"></canvas></div>
        <div id="table-container" class="panel-body"></div>`;
 
-    /* ---------- données préparées ---------- */
+    /* Préparation des séries */
     const order = [
       '00-04','05-09','10-14','15-19','20-24','25-29','30-34','35-39',
       '40-44','45-49','50-54','55-59','60-64','65-69','70-74','75-79','80+'
     ];
     const bands = order.filter(b => p.DIST[b]).concat(order.filter(b => !p.DIST[b]));
-    const hm  = bands.map(b => male  (p.DIST[b] || {}));
-    const fm  = bands.map(b => female(p.DIST[b] || {}));
+    const hm  = bands.map(b => male(p.DIST[b] || 0));
+    const fm  = bands.map(b => female(p.DIST[b] || 0));
     const tot = hm.reduce((s,v,i) => s + v + fm[i], 0) || 1;
 
-    /* ---------- histogramme (Chart.js) ---------- */
+    /* Histogramme Chart.js */
     setTimeout(() => {
       const ctx = document.getElementById('ageChart').getContext('2d');
       chart = new Chart(ctx, {
-        type: 'bar',
-        data: {
-          labels: bands,
-          datasets: [
-            {
-              label: 'Hommes',
-              data: hm,
-              backgroundColor: 'rgba(54,162,235,.7)',
-              borderColor: 'rgba(54,162,235,1)',
-              borderWidth: 1
-            },
-            {
-              label: 'Femmes',
-              data: fm,
-              backgroundColor: 'rgba(255,99,132,.7)',
-              borderColor: 'rgba(255,99,132,1)',
-              borderWidth: 1
-            }
+        type : 'bar',
+        data : {
+          labels   : bands,
+          datasets : [
+            { label:'Hommes', data:hm, backgroundColor:'rgba(54,162,235,.7)',  borderColor:'rgba(54,162,235,1)',  borderWidth:1 },
+            { label:'Femmes', data:fm, backgroundColor:'rgba(255,99,132,.7)', borderColor:'rgba(255,99,132,1)', borderWidth:1 }
           ]
         },
-        options: {
+        options : {
           responsive: true,
           maintainAspectRatio: false,
-          plugins: {
-            title: {
-              display: true,
-              text: 'Répartition par âge et sexe',
-              font: { size: 16, weight: 'bold' }
-            },
-            legend: {
-              position: 'top',
-              labels: { boxWidth: 14, font: { size: 12 } }
-            }
+          plugins:{
+            title : { display:true, text:'Répartition par âge et sexe', font:{ size:16, weight:'bold' } },
+            legend: { position:'top', labels:{ boxWidth:14, font:{ size:12 } } }
           },
-          scales: {
-            x: {
-              title: {
-                display: true,
-                text: "Tranche d'âge",
-                font: { weight: 'bold' }
-              },
-              grid: { display: false },
-              ticks: { color: '#555', font: { size: 11 } }
-            },
-            y: {
-              title: {
-                display: true,
-                text: 'Population',
-                font: { weight: 'bold' }
-              },
-              grid: { color: '#e8e8e8' },
-              ticks: {
-                color: '#555',
-                font: { size: 11 },
-                callback: v => (v >= 1000 ? `${v / 1000}k` : v)
-              }
-            }
+          scales:{
+            x:{ title:{ display:true, text:"Tranche d'âge", font:{ weight:'bold' } }, grid:{ display:false },
+                ticks:{ color:'#555', font:{ size:11 } } },
+            y:{ title:{ display:true, text:'Population', font:{ weight:'bold' } }, grid:{ color:'#e8e8e8' },
+                ticks:{ color:'#555', font:{ size:11 }, callback:v=>v>=1000?`${v/1000}k`:v } }
           },
-          animation: { duration: 400 }
+          animation:{ duration:400 }
         }
       });
 
-      /* ---------- tableau détaillé ---------- */
-      const tb = document.getElementById('table-container');
-      let rows = '', hTot = 0, fTot = 0;
-
-      bands.forEach((b, i) => {
-        const h = hm[i], f = fm[i], bandTot = h + f;
-        const pct = ((bandTot / tot) * 100).toFixed(1);
+      /* Tableau détaillé */
+      const tb   = document.getElementById('table-container');
+      let rows   = '', hTot = 0, fTot = 0;
+      bands.forEach((b,i) => {
+        const h = hm[i], f = fm[i], bandTot = h + f, pct = ((bandTot / tot) * 100).toFixed(1);
         hTot += h; fTot += f;
         const label = b === '80+' ? '80 ans et +' : `${b.replace('-', '–')} ans`;
-
-        rows += `<tr>
-                   <td>${label}</td>
-                   <td>${h.toLocaleString()}</td>
-                   <td>${f.toLocaleString()}</td>
-                   <td>${bandTot.toLocaleString()}</td>
-                   <td>
-                     <div class="progress-bar">
-                       <div class="progress-fill" style="width:${pct}%"></div>
-                     </div>
-                   </td>
-                   <td>${pct}%</td>
-                 </tr>`;
+        rows +=
+          `<tr>
+             <td>${label}</td><td>${h.toLocaleString()}</td><td>${f.toLocaleString()}</td>
+             <td>${bandTot.toLocaleString()}</td>
+             <td><div class="progress-bar"><div class="progress-fill" style="width:${pct}%"></div></div></td>
+             <td>${pct}%</td>
+           </tr>`;
       });
 
       tb.innerHTML =
         `<table>
            <thead>
-             <tr>
-               <th>Tranche d'âge</th><th>Hommes</th><th>Femmes</th>
-               <th>Total</th><th>Répartition</th><th>%</th>
-             </tr>
+             <tr><th>Tranche d'âge</th><th>Hommes</th><th>Femmes</th><th>Total</th><th>Répartition</th><th>%</th></tr>
            </thead>
            <tbody>${rows}</tbody>
            <tfoot>
@@ -290,11 +247,7 @@ export function buildUI(gov, del, sec) {
                <td><strong>${hTot.toLocaleString()}</strong></td>
                <td><strong>${fTot.toLocaleString()}</strong></td>
                <td><strong>${(hTot + fTot).toLocaleString()}</strong></td>
-               <td>
-                 <div class="progress-bar">
-                   <div class="progress-fill" style="width:100%"></div>
-                 </div>
-               </td>
+               <td><div class="progress-bar"><div class="progress-fill" style="width:100%"></div></div></td>
                <td><strong>100%</strong></td>
              </tr>
              <tr>
@@ -308,7 +261,7 @@ export function buildUI(gov, del, sec) {
     }, 40);
   }
 
-  /* ===== FILTRES ===== */
+  /* ===== Filtres ===== */
   const selAge = document.getElementById('ageFil');
   const selLvl = document.getElementById('levelSel');
   const selCol = document.getElementById('colorSel');
@@ -318,105 +271,119 @@ export function buildUI(gov, del, sec) {
     if (!crit) return true;
     if (!dist) return false;
 
-    const total  = Object.values(dist).reduce((s, b) => s + male(b) + female(b), 0) || 1;
-    const jeunes = youngBands.reduce((s, b) => s + male(dist[b] || 0) + female(dist[b] || 0), 0);
-    const vieux  = total - jeunes;
-    const fem    = Object.values(dist).reduce((s, b) => s + female(b), 0);
-    const hom    = total - fem;
+    let total = 0, jeunes = 0, vieux = 0, fem = 0, hom = 0;
+    for (const band in dist) {
+      const m = male(dist[band]);
+      const f = female(dist[band]);
+      total += m + f;
+      
+      if (youngBands.includes(band)) {
+        jeunes += m + f;
+      } else {
+        vieux += m + f;
+      }
+      
+      fem += f;
+      hom += m;
+    }
+    if (total === 0) return false;
 
     return crit === 'jeunes'  ? jeunes / total > 0.5
          : crit === 'vieux'   ? vieux  / total > 0.5
-         : crit === 'femmes'  ? fem   / total > 0.5
-         : crit === 'hommes'  ? hom   / total > 0.5
+         : crit === 'femmes'  ? fem    / total > 0.5
+         : crit === 'hommes'  ? hom    / total > 0.5
          : true;
   }
 
   function applyFilter() {
-    const crit = selAge.value;
-    const grp  = state.level === 'gov' ? lyrGov
-               : state.level === 'del' ? lyrDel
-               : lyrSec;
-    const base = state.level === 'sec' ? 0.9 : 0.85;
-  
+    showLoader('Filtrage…');
+    const crit   = selAge.value;
+    const grp    = state.level === 'gov' ? lyrGov
+                  : state.level === 'del' ? lyrDel
+                  : lyrSec;
+    const baseO  = state.level === 'sec' ? 0.9 : 0.85;
+
     grp.eachLayer(l => {
       const visible = match(l.feature.properties.DIST, crit);
-  
-      /* mémorise l’état de filtrage pour autoSelect() */
       l.options._filtered = !visible;
-  
-      /* applique (ou non) la couleur + opacité */
       l.setStyle({
         ...l.options._base,
-        fillOpacity: visible ? base : 0,
+        fillOpacity: visible ? baseO : 0,
         opacity    : visible ? 1    : 0
       });
-  
-      /* si la feature masquée était sélectionnée → on désélectionne */
       if (!visible && l === state.selected) {
         if (l._path) l._path.classList.remove('selected');
         state.selected = null;
       }
     });
-  
-    /* si plus rien n’est sélectionné après filtrage, on choisit la 1ʳᵉ visible */
+
     if (!state.selected) setTimeout(autoSelect, 20);
+    setTimeout(hideLoader, 150);
   }
-  
 
   selAge.onchange = applyFilter;
   btnR.onclick    = () => { selAge.value = ''; applyFilter(); };
 
-  /* ===== CHANGEMENT DE NIVEAU ===== */
+  /* ===== Changement de niveau ===== */
   selLvl.onchange = e => {
+    showLoader('Changement de niveau…');
     /* reset global */
     [lyrGov, lyrDel, lyrSec].forEach(refreshLayer);
     if (state.selected && state.selected._path) state.selected._path.classList.remove('selected');
-    state.selected = null; selAge.value = '';
+    state.selected = null;
+    selAge.value   = '';
 
-    /* nouveau niveau + palette densité */
-    state.level = e.target.value;
-    const feats = state.level === 'gov' ? gov.features
-               : state.level === 'del' ? del.features
-               : sec.features;
+    /* nouvelle palette */
+    state.level  = e.target.value;
+    const feats  = state.level === 'gov' ? gov.features
+                 : state.level === 'del' ? del.features
+                 : sec.features;
     state.densCls = mkDens(feats);
 
-    /* switch des couches */
+    /* switch couches */
     [lyrGov, lyrDel, lyrSec, gLab].forEach(l => { if (map.hasLayer(l)) map.removeLayer(l); });
-
     let active;
     if (state.level === 'gov')  { map.addLayer(lyrGov); active = lyrGov; map.addLayer(gLab); }
     else if (state.level === 'del') { map.addLayer(lyrDel); active = lyrDel; }
     else                           { map.addLayer(lyrSec); active = lyrSec; }
 
     refreshLayer(active);
-    renderLegend();
+    drawLegend();
     applyFilter();
-    setTimeout(autoSelect, 60);
+    setTimeout(() => { hideLoader(); }, 200);
   };
 
-  /* ===== CHANGEMENT DE MODE COULEUR ===== */
+  /* ===== Changement de mode couleur ===== */
   selCol.onchange = e => {
     state.mode = e.target.value === 'age' ? 'age' : 'density';
     [lyrGov, lyrDel, lyrSec].forEach(refreshLayer);
-    renderLegend();
+    drawLegend();
   };
 
-  /* ===== SÉLECTION INITIALE ===== */
+  /* ===== Sélection initiale ===== */
   function autoSelect() {
     const grp = state.level === 'gov' ? lyrGov
-              : state.level === 'del' ? lyrDel
-              : lyrSec;
-    const l = grp.getLayers().find(x => !x.options._filtered);
-    if (!l) return;
-  
+             : state.level === 'del' ? lyrDel
+             : lyrSec;
+    const l0  = grp.getLayers().find(x => !x.options._filtered);
+    
+    if (!l0) {
+      state.selected = null;
+      updatePanel(null);
+      return;
+    }
+    
     if (state.selected && state.selected._path) state.selected._path.classList.remove('selected');
-    state.selected = l;
-    if (l._path) l._path.classList.add('selected');
-    updatePanel(l.feature.properties);
+    state.selected = l0;
+    if (l0._path) l0._path.classList.add('selected');
+    updatePanel(l0.feature.properties);
   }
 
-  /* ===== DÉMARRAGE ===== */
-  renderLegend();
+  /* ===== Démarrage ===== */
+  // Initialiser state.mode selon la sélection UI
+  state.mode = selCol.value === 'age' ? 'age' : 'density';
+  
+  drawLegend();
   applyFilter();
-  setTimeout(autoSelect, 60);
+  hideLoader();
 }

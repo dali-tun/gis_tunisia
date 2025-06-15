@@ -152,3 +152,26 @@ tr:nth-child(even) {
 .gender.male   { background: #d1ecff; color: #004085; }
 .gender.female { background: #f8d7da; color: #721c24; }
 
+
+/* ==== Loader overlay ==== */
+.loader{position:fixed;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;background:rgba(0,0,0,.4);backdrop-filter:blur(2px);z-index:2000}
+.loader.hidden{display:none}
+.spinner{width:48px;height:48px;border:6px solid #fff;border-top-color:#0069d9;border-radius:50%;animation:spin 1s linear infinite;margin-bottom:12px}
+@keyframes spin{to{transform:rotate(360deg)}}
+.loading-text{color:#fff;font:600 16px/1 "Inter",sans-serif}
+
+/* ==== Resizable sidebar ==== */
+#charts.resizable{resize:horizontal;overflow:auto;min-width:260px}
+
+/* ==== Responsive layout ==== */
+@media (max-width: 768px){
+  #layout{flex-direction:column}
+  #charts{flex:0 0 auto;max-width:none;width:100%;height:40vh;resize:vertical}
+  #map{flex:1 1 auto;height:60vh}
+  #filters{position:static;top:auto;left:auto;display:flex;flex-wrap:wrap;gap:6px;justify-content:center;padding:8px}
+}
+@media (max-width:480px){
+  th,td{font-size:12px}
+  .indicator-value{font-size:16px}
+  .indicator-label{font-size:11px}
+}
