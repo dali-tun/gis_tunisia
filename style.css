@@ -623,3 +623,18 @@ body.hide-legend .info.legend{ display:none !important; }
   color:#555;
   margin:6px 0 2px;
 }
+
+
+/* === Mobile filter visibility === */
+@media (max-width: 768px){
+  #filters{
+    right: -100%;
+    display: none;
+    pointer-events:none;
+  }
+  body.show-filters #filters{
+    display: flex;
+    right: 0;
+    pointer-events:auto;
+  }
+}
