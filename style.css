@@ -151,3 +151,4 @@ tr:nth-child(even) {
 .gender { padding: 5px 10px; border-radius: 4px; font-weight: bold; }
 .gender.male   { background: #d1ecff; color: #004085; }
 .gender.female { background: #f8d7da; color: #721c24; }
+

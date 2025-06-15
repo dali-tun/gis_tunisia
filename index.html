@@ -6,10 +6,7 @@
   <title>Tunisie – Carte démographique</title>
 
   <!-- Leaflet -->
-  <link
-    rel="stylesheet"
-    href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
-  />
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"/>
   <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
 
   <!-- Chart.js -->
@@ -18,15 +15,9 @@
   <!-- Styles -->
   <link rel="stylesheet" href="style.css">
 </head>
-
 <body>
   <div id="layout">
     <div id="charts">
-      <!-- Le script main.js injectera ici :
-           <div class="chart-container"><canvas id="ageChart"></canvas></div>
-           puis
-           <div id="table-container" class="table-container panel-body">…</div>
-      -->
       <div id="info">
         <p style="opacity:.7">Survolez ou cliquez…</p>
       </div>
@@ -55,6 +46,6 @@
     <button id="resetFil">Réinitialiser</button>
   </div>
 
-  <script src="main.js"></script>
+  <script type="module" src="./js/main.js"></script>
 </body>
 </html>
