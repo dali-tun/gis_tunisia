@@ -16,20 +16,24 @@
   <link rel="stylesheet" href="style.css">
 </head>
 <body>
-  <!-- Loader overlay -->
-  <div id="loader" class="loader hidden">
-    <div class="spinner"></div>
-    <div class="loading-text">Chargement…</div>
-  </div>
+  <!-- Toggle buttons for mobile -->
+  <button id="toggleSidebar" class="toggle-sidebar" title="Afficher/masquer infos">❮</button>
+  <button id="toggleFilters" class="toggle-filters" title="Filtres">☰</button>
 
-  <div id="layout">
-    <div id="charts" class="resizable">
-      <div id="info">
-        <p style="opacity:.7">Survolez ou cliquez…</p>
-      </div>
-    </div>
-    <div id="map"></div>
+  <!-- Loader overlay -->
+ <!-- 1️⃣  Overlay loader -->
+<div id="loader" class="loader hidden">
+  <div class="spinner"></div>
+  <div class="loading-text">Chargement…</div>
+</div>
+
+<!-- 2️⃣  Classe « resizable » sur #charts -->
+<div id="layout">
+  <div id="charts" class="resizable">
+    <div id="info">…</div>
   </div>
+  <div id="map"></div>
+</div>
 
   <!-- Filtres -->
   <div id="filters">

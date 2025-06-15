@@ -1,6 +1,12 @@
 /* ——— Police moderne ——— */
 @import url("https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap");
 
+:root {
+  --sidebar-width: 500px;
+  --sidebar-collapsed-width: 60px;
+  --primary-color: #0069d9;
+}
+
 html, body {
   height: 100%;
   margin: 0;
@@ -11,39 +17,38 @@ html, body {
   display: flex;
   height: 100vh;
   overflow: hidden;
+  position: relative;
 }
 
 /* —— Colonne de gauche —— */
 #charts {
-  flex: 0 0 500px;
-  max-width: 500px;
+  flex: 0 0 var(--sidebar-width);
   background: #fcfcfd;
   box-shadow: 2px 0 8px rgba(0,0,0,.06);
   padding: 14px;
   box-sizing: border-box;
   overflow-y: auto;
+  transition: transform 0.3s ease, flex-basis 0.3s ease;
+  z-index: 100;
 }
 
 /* —— Container graphique —— */
 .chart-container {
   display: block;
   width: 100%;
-  height: 300px;      /* ajuster si besoin */
+  height: 300px;
   margin-bottom: 24px;
-  clear: both;
 }
 .chart-container canvas {
   width: 100% !important;
   height: 100% !important;
-  display: block;
 }
 
 /* —— Container tableau —— */
 .table-container {
-  display: block;
   width: 100%;
   margin-top: 24px;
-  clear: both;
+  overflow-x: auto;
 }
 
 /* —— Cadre général du panel info —— */
@@ -60,16 +65,14 @@ table {
   width: 100%;
   border-collapse: collapse;
   font-size: 14px;
-}
-table, th, td {
-  border: 1px solid #e5e7eb;
+  min-width: 450px;
 }
 th, td {
   padding: 6px 8px;
   text-align: center;
 }
 th {
-  background: #0069d9;
+  background: var(--primary-color);
   color: #fff;
   font-weight: 600;
 }
@@ -81,33 +84,73 @@ tr:nth-child(even) {
 #map {
   flex: 1 1 auto;
   min-width: 0;
+  transition: margin-left 0.3s ease;
 }
 
 /* —— Filtres —— */
 #filters {
   position: absolute;
   top: 10px;
-  left: 500px;   /* pile à droite de #charts (500px) */
+  left: calc(var(--sidebar-width) + 10px);
   z-index: 1000;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  max-width: calc(100% - var(--sidebar-width) - 20px);
+}
+.filter-group {
+  display: flex;
+  background: rgba(255,255,255,0.9);
+  padding: 6px;
+  border-radius: 6px;
+  box-shadow: 0 1px 4px rgba(0,0,0,0.1);
+  align-items: center;
+}
+.filter-group label {
+  font-size: 13px;
+  margin-right: 5px;
+  white-space: nowrap;
 }
 #filters select,
 #filters button {
-  padding: 6px 12px;
+  padding: 6px 10px;
   font-size: 14px;
-  margin-right: 6px;
   border-radius: 4px;
   border: 1px solid #ccc;
   background: #fff;
+  min-width: 120px;
 }
 
 /* —— Légende Leaflet —— */
 .info.legend {
-  background: #fff;
+  background: rgba(255,255,255,0.9);
   padding: 8px 10px;
   border-radius: 6px;
-  line-height: 20px;
-  font-size: 13px;
+  line-height: 18px;
+  font-size: 12px;
+  max-width: 180px;
   box-shadow: 0 0 8px rgba(0,0,0,.2);
+}
+.legend-title {
+  font-weight: bold;
+  margin-bottom: 6px;
+  font-size: 13px;
+}
+.legend-item {
+  display: flex;
+  align-items: center;
+  margin-bottom: 4px;
+}
+.legend-color {
+  width: 16px;
+  height: 16px;
+  border: 1px solid #555;
+  margin-right: 6px;
+  flex-shrink: 0;
+}
+.legend-label {
+  font-size: 11px;
+  line-height: 1.3;
 }
 
 /* —— Tooltip sombre —— */
@@ -116,16 +159,17 @@ tr:nth-child(even) {
   color: #fff;
   border: 1px solid #555;
   padding: 6px;
-  font-size: 13px;
+  font-size: 12px;
   border-radius: 3px;
 }
 
 /* —— Label gouvernorat —— */
 .gov-label {
-  font: 600 14px "Inter", sans-serif;
+  font: 600 12px "Inter", sans-serif;
   color: #fff;
   text-shadow: 0 0 4px #000;
   pointer-events: none;
+  white-space: nowrap;
 }
 
 /* —— Sélection active —— */
@@ -136,42 +180,262 @@ tr:nth-child(even) {
 }
 
 /* —— Panneaux additionnels —— */
-.indicators { display: flex; justify-content: space-around; margin-top: 10px; }
-.indicator { text-align: center; padding: 8px; }
-.indicator-value { font-size: 18px; font-weight: bold; color: #0069d9; }
-.indicator-label { font-size: 12px; color: #6c757d; }
-.panel-body { padding: 15px; overflow-y: auto; max-height: 400px; }
+.indicators { 
+  display: grid; 
+  grid-template-columns: repeat(3, 1fr);
+  gap: 8px;
+  margin-top: 10px; 
+}
+.indicator { 
+  text-align: center; 
+  padding: 8px 4px; 
+  background: #f8f9fa;
+  border-radius: 4px;
+}
+.indicator-value { font-size: 16px; font-weight: bold; color: var(--primary-color); }
+.indicator-label { font-size: 11px; color: #6c757d; }
+.panel-body { padding: 10px; overflow-y: auto; max-height: 400px; }
 
 /* —— Barre de progression —— */
-.progress-bar { height: 10px; background: #e9ecef; border-radius: 5px; overflow: hidden; margin-bottom: 8px; }
-.progress-fill { height: 100%; background: #0069d9; }
+.progress-bar { height: 8px; background: #e9ecef; border-radius: 5px; overflow: hidden; }
+.progress-fill { height: 100%; background: var(--primary-color); }
 
-/* —— Ratio par genre —— */
-.gender-ratio { display: flex; justify-content: space-around; }
-.gender { padding: 5px 10px; border-radius: 4px; font-weight: bold; }
-.gender.male   { background: #d1ecff; color: #004085; }
-.gender.female { background: #f8d7da; color: #721c24; }
+/* —— Loader overlay —— */
+.loader {
+  position: fixed;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  background: rgba(0,0,0,.4);
+  backdrop-filter: blur(2px);
+  z-index: 2000;
+}
+.loader.hidden { display: none }
+.spinner {
+  width: 40px;
+  height: 40px;
+  border: 4px solid #fff;
+  border-top-color: var(--primary-color);
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+  margin-bottom: 12px;
+}
+@keyframes spin { to { transform: rotate(360deg) } }
+.loading-text { color: #fff; font: 600 14px/1 "Inter", sans-serif }
 
 
-/* ==== Loader overlay ==== */
-.loader{position:fixed;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;background:rgba(0,0,0,.4);backdrop-filter:blur(2px);z-index:2000}
-.loader.hidden{display:none}
-.spinner{width:48px;height:48px;border:6px solid #fff;border-top-color:#0069d9;border-radius:50%;animation:spin 1s linear infinite;margin-bottom:12px}
-@keyframes spin{to{transform:rotate(360deg)}}
-.loading-text{color:#fff;font:600 16px/1 "Inter",sans-serif}
-
-/* ==== Resizable sidebar ==== */
-#charts.resizable{resize:horizontal;overflow:auto;min-width:260px}
+/* New button for toggling filters (mobile) */
+.toggle-filters {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  z-index: 1500;
+  width: 36px;
+  height: 36px;
+  border: none;
+  border-radius: 50%;
+  background: var(--primary-color);
+  color: #fff;
+  font: 700 18px/36px sans-serif;
+  box-shadow: 0 2px 6px rgba(0,0,0,.3);
+  display: none;
+  cursor: pointer;
+}
 
 /* ==== Responsive layout ==== */
-@media (max-width: 768px){
-  #layout{flex-direction:column}
-  #charts{flex:0 0 auto;max-width:none;width:100%;height:40vh;resize:vertical}
-  #map{flex:1 1 auto;height:60vh}
-  #filters{position:static;top:auto;left:auto;display:flex;flex-wrap:wrap;gap:6px;justify-content:center;padding:8px}
+/* Bouton de bascule pour mobile */
+.toggle-sidebar {
+  position: absolute;
+  top: 10px;
+  left: 10px;
+  z-index: 1500;
+  width: 36px;
+  height: 36px;
+  border: none;
+  border-radius: 50%;
+  background: var(--primary-color);
+  color: #fff;
+  font: 700 18px/36px sans-serif;
+  box-shadow: 0 2px 6px rgba(0,0,0,.3);
+  display: none;
+  cursor: pointer;
 }
-@media (max-width:480px){
-  th,td{font-size:12px}
-  .indicator-value{font-size:16px}
-  .indicator-label{font-size:11px}
+
+/* Mode tablette */
+@media (max-width: 1024px) {
+  :root { --sidebar-width: 380px; }
+  
+  .chart-container { height: 250px; }
+  
+  .info.legend {
+    max-width: 150px;
+    padding: 6px;
+    font-size: 11px;
+  }
+  
+  .legend-title { font-size: 12px; }
+  .legend-color { width: 14px; height: 14px; }
+  
+  #filters {
+    left: calc(var(--sidebar-width) + 5px);
+    gap: 6px;
+  }
+  
+  #filters select, 
+  #filters button {
+    padding: 5px 8px;
+    font-size: 13px;
+    min-width: 100px;
+  }
+  
+  .gov-label { font-size: 11px; }
+}
+
+/* Mode mobile (tablette petite et téléphones) */
+@media (max-width: 768px) {
+
+/* Hide filters off-canvas by default */
+#filters {
+  transform: translateY(-120%);
+  transition: transform 0.3s ease;
+}
+body.show-filters #filters {
+  transform: translateY(0);
+}
+/* Show toggle buttons in mobile */
+.toggle-filters {
+  display: block;
+}
+/* Reorder: map on top, info at bottom */
+#map { order: 1; }
+#charts { order: 2; }
+
+  #layout {
+    flex-direction: column;
+    height: auto;
+    min-height: 100vh;
+  }
+  
+  #charts {
+    flex: 0 0 auto;
+    width: 100%;
+    height: auto;
+    max-height: 50vh;
+    padding: 10px;
+  }
+  
+  #map {
+    flex: 1;
+    height: 50vh;
+  }
+  
+  .toggle-sidebar {
+    display: block;
+  }
+  
+  #filters {
+    position: absolute;
+    top: 60px;
+    left: 10px;
+    right: 10px;
+    max-width: none;
+    flex-wrap: wrap;
+    justify-content: center;
+  }
+  
+  .filter-group {
+    flex: 1;
+    min-width: 140px;
+    max-width: 200px;
+  }
+  
+  .info.legend {
+    bottom: 5px !important;
+    left: 5px !important;
+    max-width: 140px;
+    padding: 5px;
+  }
+  
+  .legend-title { font-size: 11px; }
+  .legend-item { margin-bottom: 3px; }
+  .legend-color { width: 12px; height: 12px; }
+  .legend-label { font-size: 10px; }
+  
+  .chart-container { height: 220px; }
+  
+  .panel-body {
+    max-height: 200px;
+  }
+  
+  .indicators {
+    grid-template-columns: repeat(3, 1fr);
+    gap: 5px;
+  }
+  
+  .indicator-value { font-size: 14px; }
+}
+
+/* Téléphones très petits */
+@media (max-width: 480px) {
+  :root { --sidebar-width: 100%; }
+  
+  .chart-container { height: 200px; }
+  
+  table, th, td {
+    font-size: 12px;
+    padding: 4px 6px;
+  }
+  
+  .indicators {
+    grid-template-columns: repeat(3, 1fr);
+  }
+  
+  .indicator {
+    padding: 5px 2px;
+  }
+  
+  .indicator-value { font-size: 13px; }
+  .indicator-label { font-size: 10px; }
+  
+  #filters {
+    top: 50px;
+    gap: 4px;
+  }
+  
+  .filter-group {
+    min-width: 120px;
+    padding: 4px;
+  }
+  
+  #filters select, 
+  #filters button {
+    padding: 4px 6px;
+    font-size: 12px;
+    min-width: 90px;
+  }
+  
+  .info.legend {
+    max-width: 120px;
+    line-height: 1.2;
+  }
+}
+
+/* Mode plein écran pour la carte */
+body.hide-info #charts {
+  transform: translateX(-100%);
+  flex-basis: 0;
+  overflow: hidden;
+  padding: 0;
+  border: none;
+}
+
+body.hide-info #map {
+  margin-left: 0;
+}
+
+body.hide-info .toggle-sidebar::after {
+  content: "❯";
+  transform: rotate(180deg);
 }

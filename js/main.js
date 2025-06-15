@@ -20,3 +20,20 @@ loadData().then(({ gov, del, sec }) => {
   console.error('Erreur lors du chargement :',err);
   alert('Erreur de chargement des données');
 }).finally(hideLoader);
+
+
+/* ===== Mobile toggle buttons ===== */
+document.addEventListener('DOMContentLoaded', () => {
+  const btnSidebar = document.getElementById('toggleSidebar');
+  const btnFilters = document.getElementById('toggleFilters');
+  if (btnSidebar) {
+    btnSidebar.addEventListener('click', () => {
+      document.body.classList.toggle('hide-info');
+    });
+  }
+  if (btnFilters) {
+    btnFilters.addEventListener('click', () => {
+      document.body.classList.toggle('show-filters');
+    });
+  }
+});
