@@ -22,20 +22,22 @@ loadData().then(({ gov, del, sec }) => {
 }).finally(hideLoader);
 
 
-/* ===== Mobile toggle buttons ===== */
+/* ===== Toggle buttons listeners ===== */
 document.addEventListener('DOMContentLoaded', () => {
   const btnSidebar = document.getElementById('toggleSidebar');
   const btnFilters = document.getElementById('toggleFilters');
-  if (btnSidebar) {
-    btnSidebar.addEventListener('click', () => {
-      document.body.classList.toggle('hide-info');
-    });
-  }
-  if (btnFilters) {
-    btnFilters.addEventListener('click', () => {
-      document.body.classList.toggle('show-filters');
-    });
-  }
+  btnSidebar?.addEventListener('click', () => {
+    document.body.classList.toggle('hide-info');
+  });
+  btnFilters?.addEventListener('click', () => {
+    document.body.classList.toggle('show-filters');
+  });
 });
 
-
+/* === Legend toggle === */
+document.addEventListener('DOMContentLoaded', () => {
+  const btnLegend = document.getElementById('toggleLegend');
+  btnLegend?.addEventListener('click', () => {
+    document.body.classList.toggle('hide-legend');
+  });
+});

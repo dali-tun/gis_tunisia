@@ -16,9 +16,10 @@
   <link rel="stylesheet" href="style.css">
 </head>
 <body>
-  <!-- Toggle buttons for mobile -->
+  <!-- Mobile control buttons -->
   <button id="toggleSidebar" class="toggle-sidebar" title="Afficher/masquer infos">❮</button>
   <button id="toggleFilters" class="toggle-filters" title="Filtres">☰</button>
+<button id="toggleLegend" class="toggle-legend" title="Légende">🗺️</button>
 
   <!-- Loader overlay -->
  <!-- 1️⃣  Overlay loader -->
@@ -37,23 +38,30 @@
 
   <!-- Filtres -->
   <div id="filters">
-    <select id="levelSel">
-      <option value="gov">Niveau : gouvernorats</option>
-      <option value="del">Niveau : délégations</option>
-      <option value="sec">Niveau : secteurs</option>
+      <h3 class="filters-title">🛠️ Filtres</h3>
+    <label class="filter-label" for="levelSel">Niveau</label>
+      <select id="levelSel">
+      <option value="gov">🏛️ Gouvernorats</option>
+      <option value="del">🏘️ Délégations</option>
+      <option value="sec">🏚️ Secteurs</option>
     </select>
-    <select id="colorSel">
-      <option value="density">Colorier : densité</option>
-      <option value="age">Colorier : âge médian</option>
+    <label class="filter-label" for="colorSel">Coloration</label>
+      <select id="colorSel">
+      <option value="density">🌐 Densité</option>
+      <option value="age">👵 Âge médian</option>
     </select>
-    <select id="ageFil">
-      <option value="">Filtrer par âge</option>
-      <option value="jeunes">Majorité jeunes</option>
-      <option value="vieux">Majorité seniors</option>
-      <option value="femmes">Majorité féminine</option>
-      <option value="hommes">Majorité masculine</option>
+    <label class="filter-label" for="ageFil">Filtre âge</label>
+      <select id="ageFil">
+      <option value="">🎯 Filtrage âge</option>
+      <option value="jeunes">🧒 Majorité jeunes</option>
+      <option value="vieux">👴 Majorité seniors</option>
+      <option value="femmes">👩 Majorité féminine</option>
+      <option value="hommes">👨 Majorité masculine</option>
     </select>
-    <button id="resetFil">Réinitialiser</button>
+<label class="filter-label" for="searchInput">Recherche</label>
+      <input id="searchInput" list="searchList" placeholder="🔍 Rechercher…" autocomplete="off" style="flex:1;min-width:160px">
+<datalist id="searchList"></datalist>
+<button id="resetFil">♻️ Réinitialiser</button>
   </div>
 
   <script type="module" src="./js/main.js"></script>

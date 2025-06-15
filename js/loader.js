@@ -125,11 +125,11 @@ export function mkDens(features) {
   };
   const bks = jenksBreaks(values, 5);
   return [
-    {min:0,        max:bks[1], col:palDen[0], lab:`Très faible (≤ ${Math.round(bks[1])})`, desc:'Zones peu denses'},
-    {min:bks[1],   max:bks[2], col:palDen[1], lab:`Faible (${Math.round(bks[1])}-${Math.round(bks[2])})`, desc:'Densité inférieure à la moyenne'},
-    {min:bks[2],   max:bks[3], col:palDen[2], lab:`Moyenne (${Math.round(bks[2])}-${Math.round(bks[3])})`, desc:'Densité moyenne'},
-    {min:bks[3],   max:bks[4], col:palDen[3], lab:`Élevée (${Math.round(bks[3])}-${Math.round(bks[4])})`, desc:'Densité supérieure à la moyenne'},
-    {min:bks[4],   max:1e12,  col:palDen[4], lab:`Très élevée (> ${Math.round(bks[4])})`, desc:'Zones très denses'}
+    {min:0,        max:bks[1], col:palDen[0], lab:`Très faible (≤ ${Math.round(bks[1])})`, desc:''},
+    {min:bks[1],   max:bks[2], col:palDen[1], lab:`Faible (${Math.round(bks[1])}-${Math.round(bks[2])})`, desc:''},
+    {min:bks[2],   max:bks[3], col:palDen[2], lab:`Moyenne (${Math.round(bks[2])}-${Math.round(bks[3])})`, desc:''},
+    {min:bks[3],   max:bks[4], col:palDen[3], lab:`Élevée (${Math.round(bks[3])}-${Math.round(bks[4])})`, desc:''},
+    {min:bks[4],   max:1e12,  col:palDen[4], lab:`Très élevée (> ${Math.round(bks[4])})`, desc:''}
   ];
 }
 

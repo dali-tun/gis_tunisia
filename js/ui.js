@@ -386,4 +386,47 @@ export function buildUI(gov, del, sec) {
   drawLegend();
   applyFilter();
   hideLoader();
+/* ===== Barre de recherche ===== */
+const searchInput = document.getElementById('searchInput');
+const searchList  = document.getElementById('searchList');
+if (searchInput) {
+  searchInput.addEventListener('input', () => {
+    const q = searchInput.value.trim().toLowerCase();
+    searchList.innerHTML = '';
+    if (q.length < 2) return;
+    const feats = (state.level === 'gov' ? gov.features : state.level === 'del' ? del.features : sec.features);
+    
+const seen = new Set();
+const matches = [];
+for (const f of feats) {
+  const n = f.properties.LABEL;
+  if (!seen.has(n) && n.toLowerCase().includes(q)) {
+    seen.add(n);
+    matches.push(n);
+  }
+  if (matches.length >= 5) break;
+}
+
+    matches.forEach(n => {
+      const opt = document.createElement('option');
+      opt.value = n;
+      searchList.appendChild(opt);
+    });
+  });
+  searchInput.addEventListener('change', () => {
+    const name = searchInput.value.trim();
+    if (!name) return;
+    let layers = state.level === 'gov' ? lyrGov : state.level === 'del' ? lyrDel : lyrSec;
+    let foundLayer = null;
+    layers.eachLayer(l => {
+      if (l.feature.properties.LABEL === name) foundLayer = l;
+    });
+    if (foundLayer) {
+      onSelect(foundLayer, foundLayer.feature);
+      map.fitBounds(foundLayer.getBounds().pad(0.005));
+          document.body.classList.remove('hide-info');
+    }
+  });
+}
+
 }
