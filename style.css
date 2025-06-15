@@ -93,7 +93,7 @@ tr:nth-child(even) {
   top: 10px;
   left: calc(var(--sidebar-width) + 10px);
   z-index: 1000;
-  display: flex;
+  display:none;
   flex-wrap: wrap;
   gap: 8px;
   max-width: calc(100% - var(--sidebar-width) - 20px);
@@ -296,12 +296,16 @@ tr:nth-child(even) {
 /* Mode mobile (tablette petite et téléphones) */
 @media (max-width: 768px) {
 
+
+
+
 /* Hide filters off-canvas by default */
 #filters {
   transform: translateY(-120%);
   transition: transform 0.3s ease;
 }
 body.show-filters #filters {
+  display:flex;
   transform: translateY(0);
 }
 /* Show toggle buttons in mobile */
