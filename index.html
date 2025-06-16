@@ -19,7 +19,6 @@
   <!-- Mobile control buttons -->
   <button id="toggleSidebar" class="toggle-sidebar" title="Afficher/masquer infos">❮</button>
   <button id="toggleFilters" class="toggle-filters" title="Filtres">☰</button>
-  <button id="toggleLegend" class="toggle-legend" title="Afficher/masquer légende">📊</button>
 
   <!-- Loader overlay -->
  <!-- 1️⃣  Overlay loader -->
@@ -37,12 +36,10 @@
 </div>
 
   
-  <!-- Filtres (design 2025‑06) -->
-  <div id="filters" class="filters-panel">
-    <h2 class="filters-title">🎚️ Filtres</h2>
-
+<!-- Filtres -->
+  <div id="filters">
     <div class="filter-group">
-      <label for="levelSel" class="filter-label">Niveau</label>
+      <label for="levelSel">Niveau</label>
       <select id="levelSel">
         <option value="gov">🏛️ Gouvernorats</option>
         <option value="del">🏘️ Délégations</option>
@@ -51,7 +48,7 @@
     </div>
 
     <div class="filter-group">
-      <label for="colorSel" class="filter-label">Couleur</label>
+      <label for="colorSel">Couleur</label>
       <select id="colorSel">
         <option value="density">🌐 Densité</option>
         <option value="age">👵 Âge médian</option>
@@ -59,7 +56,7 @@
     </div>
 
     <div class="filter-group">
-      <label for="ageFil" class="filter-label">Focus démographique</label>
+      <label for="ageFil">Focus démographique</label>
       <select id="ageFil">
         <option value="">– Aucun –</option>
         <option value="jeunes">🧒 Majorité jeunes</option>
@@ -69,16 +66,19 @@
       </select>
     </div>
 
-    <div class="filter-group search-group">
-      <label for="searchInput" class="filter-label">Recherche</label>
+    <div class="filter-group">
+      <label for="searchInput">Recherche</label>
       <input id="searchInput" list="searchList" placeholder="🔍 Rechercher…" autocomplete="off">
       <datalist id="searchList"></datalist>
     </div>
 
-    <button id="resetFil" class="reset-btn" title="Réinitialiser">♻️</button>
+    <button id="resetFil" title="Réinitialiser les filtres">♻️ Réinitialiser</button>
   </div>
 
-<script type="module" src="js/main.js"></script>
+
+  <script type="module" src="js/main.js"></script>
+
+<button id="toggleLegend" class="toggle-legend" title="Légende">📊</button>
 
 <script>
 document.addEventListener('DOMContentLoaded', () => {

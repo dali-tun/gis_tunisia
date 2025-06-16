@@ -177,6 +177,15 @@ export function buildUI(gov, del, sec) {
            </div>
          </div>
        </div>
+       <div class="schools">
+         <h4>Établissements&nbsp;scolaires</h4>
+         <ul class="schools-list">
+           <li>Écoles primaires&nbsp;: ${safe(p.nb_primaire,0)}</li>
+           <li>Collèges&nbsp;: ${safe(p.nb_college,0)}</li>
+           <li>Lycées&nbsp;: ${safe(p.nb_lycee,0)}</li>
+         </ul>
+       </div>
+
        <div class="chart-container" style="height:300px"><canvas id="ageChart"></canvas></div>
        <div id="table-container" class="panel-body"></div>`;
 
