@@ -28,16 +28,13 @@ document.addEventListener('DOMContentLoaded', () => {
   const btnFilters = document.getElementById('toggleFilters');
   btnSidebar?.addEventListener('click', () => {
     document.body.classList.toggle('hide-info');
-  });
-  btnFilters?.addEventListener('click', () => {
-    document.body.classList.toggle('show-filters');
-  });
-});
-
-/* === Legend toggle === */
-document.addEventListener('DOMContentLoaded', () => {
+  
   const btnLegend = document.getElementById('toggleLegend');
   btnLegend?.addEventListener('click', () => {
     document.body.classList.toggle('hide-legend');
+  });
+});
+  btnFilters?.addEventListener('click', () => {
+    document.body.classList.toggle('show-filters');
   });
 });

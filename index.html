@@ -19,7 +19,7 @@
   <!-- Mobile control buttons -->
   <button id="toggleSidebar" class="toggle-sidebar" title="Afficher/masquer infos">❮</button>
   <button id="toggleFilters" class="toggle-filters" title="Filtres">☰</button>
-<button id="toggleLegend" class="toggle-legend" title="Légende">🗺️</button>
+  <button id="toggleLegend" class="toggle-legend" title="Afficher/masquer légende">📊</button>
 
   <!-- Loader overlay -->
  <!-- 1️⃣  Overlay loader -->
@@ -36,34 +36,60 @@
   <div id="map"></div>
 </div>
 
-  <!-- Filtres -->
-  <div id="filters">
-      <h3 class="filters-title">🛠️ Filtres</h3>
-    <label class="filter-label" for="levelSel">Niveau</label>
+  
+  <!-- Filtres (design 2025‑06) -->
+  <div id="filters" class="filters-panel">
+    <h2 class="filters-title">🎚️ Filtres</h2>
+
+    <div class="filter-group">
+      <label for="levelSel" class="filter-label">Niveau</label>
       <select id="levelSel">
-      <option value="gov">🏛️ Gouvernorats</option>
-      <option value="del">🏘️ Délégations</option>
-      <option value="sec">🏚️ Secteurs</option>
-    </select>
-    <label class="filter-label" for="colorSel">Coloration</label>
+        <option value="gov">🏛️ Gouvernorats</option>
+        <option value="del">🏘️ Délégations</option>
+        <option value="sec">🏚️ Secteurs</option>
+      </select>
+    </div>
+
+    <div class="filter-group">
+      <label for="colorSel" class="filter-label">Couleur</label>
       <select id="colorSel">
-      <option value="density">🌐 Densité</option>
-      <option value="age">👵 Âge médian</option>
-    </select>
-    <label class="filter-label" for="ageFil">Filtre âge</label>
+        <option value="density">🌐 Densité</option>
+        <option value="age">👵 Âge médian</option>
+      </select>
+    </div>
+
+    <div class="filter-group">
+      <label for="ageFil" class="filter-label">Focus démographique</label>
       <select id="ageFil">
-      <option value="">🎯 Filtrage âge</option>
-      <option value="jeunes">🧒 Majorité jeunes</option>
-      <option value="vieux">👴 Majorité seniors</option>
-      <option value="femmes">👩 Majorité féminine</option>
-      <option value="hommes">👨 Majorité masculine</option>
-    </select>
-<label class="filter-label" for="searchInput">Recherche</label>
-      <input id="searchInput" list="searchList" placeholder="🔍 Rechercher…" autocomplete="off" style="flex:1;min-width:160px">
-<datalist id="searchList"></datalist>
-<button id="resetFil">♻️ Réinitialiser</button>
+        <option value="">– Aucun –</option>
+        <option value="jeunes">🧒 Majorité jeunes</option>
+        <option value="vieux">👴 Majorité seniors</option>
+        <option value="femmes">👩 Majorité féminine</option>
+        <option value="hommes">👨 Majorité masculine</option>
+      </select>
+    </div>
+
+    <div class="filter-group search-group">
+      <label for="searchInput" class="filter-label">Recherche</label>
+      <input id="searchInput" list="searchList" placeholder="🔍 Rechercher…" autocomplete="off">
+      <datalist id="searchList"></datalist>
+    </div>
+
+    <button id="resetFil" class="reset-btn" title="Réinitialiser">♻️</button>
   </div>
 
-  <script type="module" src="./js/main.js"></script>
+<script type="module" src="js/main.js"></script>
+
+<script>
+document.addEventListener('DOMContentLoaded', () => {
+  const btnLegend = document.getElementById('toggleLegend');
+  if(btnLegend){
+    btnLegend.addEventListener('click', () => {
+      document.body.classList.toggle('hide-legend');
+    });
+  }
+});
+</script>
+
 </body>
 </html>

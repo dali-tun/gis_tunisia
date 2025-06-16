@@ -547,7 +547,7 @@ body.show-filters #filters {
 }
 
 
-
+/* === Responsive legend === */
 .legend, .leaflet-control .legend {
   font-size: clamp(11px, 1.8vw, 14px);
   line-height: 1.3;
@@ -573,68 +573,216 @@ body.show-filters #filters {
   font-size: 13px;
 }
 
-
-/* === Legend toggle button === */
-.toggle-legend{
-  position:absolute;
-  bottom:20px;
-  right:20px;
-  z-index:1500;
-  width:38px;
-  height:38px;
-  border:none;
-  border-radius:50%;
-  background:var(--primary-color);
-  color:#fff;
-  font-size:20px;
-  font-weight:700;
-  cursor:pointer;
-  box-shadow:0 2px 6px rgba(0,0,0,.35);
+/* === Mobile layout map-top info-bottom === */
+@media (max-width: 768px){
+  #layout {
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+  }
+  #map {
+    order: 1;
+    height: 50vh;
+  }
+  #charts {
+    order: 2;
+    width: 100%;
+    height: auto;
+    max-height: 50vh;
+    overflow-y: auto;
+  }
+  /* Filters drawer */
+  #filters {
+    position: fixed;
+    top: 60px;
+    right: -85%;
+    width: 85%;
+    max-width: 320px;
+    height: calc(100% - 60px);
+    transition: right 0.3s ease;
+    display: none;
+  }
+  body.show-filters #filters {
+    display: flex;
+    right: 0;
+  }
 }
 
-/* Hide legend when toggled */
-body.hide-legend .info.legend{ display:none !important; }
 
-/* === Legend sizing === */
-.info.legend{
-  max-width:24vw;
-  min-width:140px;
-}
-@media(max-width:1024px){
-  .info.legend{ max-width:32vw; }
-}
-@media(max-width:768px){
-  .info.legend{ max-width:60vw; font-size:11px; padding:6px; }
-}
-@media(max-width:480px){
-  .info.legend{ max-width:70vw; font-size:10px; padding:5px; }
+/* === Mobile filters compact === */
+@media (max-width: 768px){
+  #filters{
+    padding: 8px 10px;
+    gap: 8px;
+  }
+  .filters-title{
+    font-size: 14px;
+    margin: 0 0 6px;
+  }
+  .filter-label{
+    font-size: 11px;
+    margin: 4px 0 2px;
+  }
+  #filters select,
+  #filters input[type="text"]{
+    font-size: 14px;
+    padding: 4px 8px;
+  }
 }
 
-/* === Filters panel heading & labels === */
+
+/* === Filtres – titres & labels === */
 .filters-title{
-  font-weight:600;
+  font-size: 16px;
+  font-weight: 600;
+  margin: 0 0 10px;
+  text-align: center;
+}
+.filter-label{
+  font-size: 13px;
+  margin-bottom: 4px;
+  color: #333;
+}
+
+/* Compact on mobile */
+@media(max-width:768px){
+  .filters-title{font-size:14px;margin:0 0 8px;}
+  .filter-label{font-size:11px;margin-bottom:2px;}
+}
+
+/* === Resizable info panel on desktop === */
+@media(min-width:769px){
+  #charts.resizable{
+    resize: horizontal;
+    overflow: auto;
+    max-width: 70vw;
+    min-width: 260px;
+  }
+}
+
+
+/* === Design filtres (juin 2025) === */
+.filters-panel{
+  position:absolute;
+  top:12px;
+  right:12px;
+  z-index:1000;
+  display:flex;
+  flex-direction:column;
+  gap:10px;
+  background:rgba(255,255,255,0.95);
+  padding:12px;
+  border-radius:8px;
+  box-shadow:0 2px 6px rgba(0,0,0,0.15);
+  max-width:260px;
+}
+.filters-title{
+  margin:0 0 4px;
   font-size:16px;
-  line-height:1.3;
-  color:var(--primary-color,#e5181d);
-  margin:0 0 10px;
+  font-weight:600;
+  text-align:center;
+}
+.filter-group{
+  display:flex;
+  flex-direction:column;
 }
 .filter-label{
   font-size:12px;
-  color:#555;
-  margin:6px 0 2px;
+  margin-bottom:2px;
+}
+#filters select,
+#filters input{
+  padding:6px 8px;
+  font-size:14px;
+  border:1px solid #bbb;
+  border-radius:4px;
+}
+#filters input{
+  width:100%;
+  min-width:150px;
+}
+.reset-btn{
+  align-self:end;
+  padding:6px 10px;
+  font-size:15px;
+  background:#f3f3f3;
+  border:1px solid #bbb;
+  border-radius:4px;
+  cursor:pointer;
+}
+
+/* Compact layout on mobile */
+@media(max-width:768px){
+  .filters-panel{
+    top:8px;
+    right:8px;
+    gap:6px;
+    padding:8px;
+    max-width:calc(100% - 16px);
+  }
+  .filters-title{font-size:14px;}
+  #filters select,#filters input{font-size:13px;padding:5px 6px;}
+}
+
+/* === Layout mobile: carte en haut, infos en bas === */
+@media(max-width:768px){
+  #layout{flex-direction:column;}
+  #map{order:1;height:50vh;}
+  #charts{order:2;flex:0 0 auto;max-height:50vh;}
+}
+
+/* === Sidebar resizable on desktop === */
+@media(min-width:769px){
+  #charts.resizable{
+    resize:horizontal;
+    overflow:auto;
+    max-width:70vw;
+    min-width:250px;
+  }
 }
 
 
-/* === Mobile filter visibility === */
-@media (max-width: 768px){
-  #filters{
-    right: -100%;
-    display: none;
-    pointer-events:none;
+/* === Toggle legend button === */
+.toggle-legend{
+  position:absolute;
+  top:10px;
+  left:58px;
+  z-index:1500;
+  width:36px;
+  height:36px;
+  border:none;
+  border-radius:50%;
+  background:var(--primary-color,#e5181d);
+  color:#fff;
+  font:700 18px/36px sans-serif;
+  box-shadow:0 2px 6px rgba(0,0,0,.3);
+  cursor:pointer;
+  display:none; /* shown via media query for mobile */
+}
+@media(max-width:768px){
+  .toggle-sidebar,
+  .toggle-filters,
+  .toggle-legend{
+    display:block;
   }
-  body.show-filters #filters{
-    display: flex;
-    right: 0;
-    pointer-events:auto;
+}
+
+/* Hide legend when class applied */
+body.hide-legend .info.legend{ display:none !important; }
+
+
+/* === Info panel mobile styling === */
+@media(max-width:768px){
+  #charts{
+    background:rgba(255,255,255,0.95);
+    padding:12px 10px 6px;
+    border-top-left-radius:14px;
+    border-top-right-radius:14px;
+    box-shadow:0 -2px 8px rgba(0,0,0,.25);
+    overflow:auto;
+  }
+  #charts h3{
+    margin:4px 0 8px;
+    font-size:15px;
   }
 }
