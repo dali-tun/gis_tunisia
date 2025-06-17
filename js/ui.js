@@ -28,6 +28,7 @@ export function buildUI(gov, del, sec) {
 
   /* ===== Carte ===== */
   const map = L.map('map', { attributionControl: false }).setView([34, 9], 7);
+  window.map = map;
   L.tileLayer(
     'https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png',
     { attribution: '© OSM / Carto' }
@@ -175,6 +176,10 @@ export function buildUI(gov, del, sec) {
              <div class="indicator-value">${safe(p.MED_AGE)}</div>
              <div class="indicator-label">Âge médian</div>
            </div>
+           <div class="indicator">
+             <div class="indicator-value">${safe(p.superficie || p.AREA)}</div>
+             <div class="indicator-label">Superficie&nbsp;(km²)</div>
+           </div>
          </div>
        </div>
        <div class="schools">
@@ -183,6 +188,7 @@ export function buildUI(gov, del, sec) {
            <li>Écoles primaires&nbsp;: ${safe(p.nb_primaire,0)}</li>
            <li>Collèges&nbsp;: ${safe(p.nb_college,0)}</li>
            <li>Lycées&nbsp;: ${safe(p.nb_lycee,0)}</li>
+           <li>Centres&nbsp;prépa&nbsp;tech.&nbsp;: ${safe(p.nb_prep_tech,0)}</li>
          </ul>
        </div>
 

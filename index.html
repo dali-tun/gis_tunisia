@@ -73,7 +73,25 @@
     </div>
 
     <button id="resetFil" title="Réinitialiser les filtres">♻️ Réinitialiser</button>
+    <div class="filter-group filter-schools">
+  <label style="display:flex;align-items:center;gap:6px;font-weight:600;">
+    <input type="checkbox" id="schoolsAll"> Établissements scolaires
+  </label>
+  <div id="schoolTypes" style="display:flex;gap:8px;margin-left:6px;flex-wrap:wrap;">
+    <label style="display:flex;align-items:center;gap:4px;color:#1f77b4;">
+      <input type="checkbox" class="schoolTypeChk" data-type="E.PRIMAIRE"> Prim.
+    </label>
+    <label style="display:flex;align-items:center;gap:4px;color:#ff7f0e;">
+      <input type="checkbox" class="schoolTypeChk" data-type="E.PREP"> Collège
+    </label>
+    <label style="display:flex;align-items:center;gap:4px;color:#2ca02c;">
+      <input type="checkbox" class="schoolTypeChk" data-type="E.PREP.TECH"> Prépa Tech
+    </label>
+    <label style="display:flex;align-items:center;gap:4px;color:#d62728;">
+      <input type="checkbox" class="schoolTypeChk" data-type="LYCEE"> Lycée
+    </label>
   </div>
+</div></div>
 
 
   <script type="module" src="js/main.js"></script>
