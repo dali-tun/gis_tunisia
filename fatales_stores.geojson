@@ -1,0 +1,355 @@
+{
+  "type": "FeatureCollection",
+  "features": [
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          10.1815426,
+          36.849102
+        ]
+      },
+      "properties": {
+        "name": "Fatales Ennasr",
+        "address": "Rue Docteur Slim Ammar, ennasr 2, 33135 Tunis, Tunisia"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          10.1793563,
+          36.7999073
+        ]
+      },
+      "properties": {
+        "name": "Fatales Palmarium",
+        "address": "Avenue de Carthage, 33133 Tunis, Tunisia"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          10.333751,
+          36.884087
+        ]
+      },
+      "properties": {
+        "name": "Fatales Zéphyr",
+        "address": "Centre commercial Zéphyr - La Marsa, 2070 Tunis, Tunisia"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          10.2372573,
+          36.8393493
+        ]
+      },
+      "properties": {
+        "name": "Fatales Lac Palace",
+        "address": "Centre commercial Lac Palace, 2070 Tunis, Tunisia"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          10.123301,
+          36.900606
+        ]
+      },
+      "properties": {
+        "name": "Fatales Tunis City",
+        "address": "Centre commercial Tunis City, 2037 Ariana, Tunisia"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          10.275049,
+          36.924714
+        ]
+      },
+      "properties": {
+        "name": "Fatales Gammarth",
+        "address": "Gammarth Center côté de Carthage, boutique Nº23, Gammarth, 1057 Tunis, Tunisia"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          10.2384369,
+          36.8369195
+        ]
+      },
+      "properties": {
+        "name": "Fatales Lac Edward's",
+        "address": "Centre commercial Pyramide du Lac (ex abc) Lac Edward's, 2070 Tunis, Tunisia"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          10.7334693,
+          36.4506283
+        ]
+      },
+      "properties": {
+        "name": "Fatales Nabeul",
+        "address": "Ave. Jdeida Magherbia, Nabeul, 8000 Nabeul, Tunisia"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          9.8718197,
+          37.2722991
+        ]
+      },
+      "properties": {
+        "name": "Fatales Bizerte",
+        "address": "Rue 1er mai 7000 BIZERTE, 7000 Bizerte, Tunisia"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          10.627081,
+          35.841849
+        ]
+      },
+      "properties": {
+        "name": "Fatales Sousse",
+        "address": "Centre commercial Taj Marhaba, 4000 Sousse, Tunisia"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          10.763935,
+          34.730605
+        ]
+      },
+      "properties": {
+        "name": "Fatales Sfax",
+        "address": "Rue Patrice Lumumba, 3000 Sfax, Tunisia"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          10.1815426,
+          36.849102
+        ]
+      },
+      "properties": {
+        "name": "Fatales Avenue Habib Bourguiba",
+        "address": "Avenue Habib Bourguiba, 2092 Tunis, Tunisia"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          10.1513867,
+          36.8460513
+        ]
+      },
+      "properties": {
+        "name": "FATALES Makni",
+        "address": "Espace Makni – El Menzah 9, 2092 Tunis, Tunisia"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          10.1667741,
+          36.8469528
+        ]
+      },
+      "properties": {
+        "name": "FATALES MENZAH 6",
+        "address": "Les cinquante boutiques, 2091 Tunis, Tunisia"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          10.2438458,
+          36.8480635
+        ]
+      },
+      "properties": {
+        "name": "FATALES TUNISIA MALL",
+        "address": "Centre Commercial Tunisia Mall 2, 2092 Tunis, Tunisia"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          10.6144602,
+          36.3989382
+        ]
+      },
+      "properties": {
+        "name": "FATALES Hammamet",
+        "address": "64 Ave. de la Republique, Hammamet, 8050 Nabeul, Tunisia"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          9.8719392,
+          37.273199
+        ]
+      },
+      "properties": {
+        "name": "FATALES Bizerte Av Habib Bourguiba",
+        "address": "N°51, avenue Habib Bourguiba Bizerte, 7000 Bizeret, Tunisia"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          10.6248493,
+          35.8416183
+        ]
+      },
+      "properties": {
+        "name": "Fatales Sousse Mall",
+        "address": "Mall de Sousse, 4054 Sousse, Tunisia"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          10.6146764,
+          35.8452773
+        ]
+      },
+      "properties": {
+        "name": "FATALES Le Vicomte Sousse",
+        "address": "Centre Commercial le Vicomte Route Touristique Sousse, 4054 Sousse, Tunisia"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          10.8133701,
+          35.7738211
+        ]
+      },
+      "properties": {
+        "name": "Fatales Monastir",
+        "address": "Rue du Combattant Suprême, Monastir, 5000 Monastir, Tunisia"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          10.8244665,
+          35.7545885
+        ]
+      },
+      "properties": {
+        "name": "Fatales Monastir Mall",
+        "address": "Monastir Mall, 5000 Monastir, Tunisia"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          10.0949417,
+          33.8764625
+        ]
+      },
+      "properties": {
+        "name": "Fatales Gabes",
+        "address": "97, avenue Farhat Hached, 6000 Gabes, Tunisia"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          10.0954912,
+          35.6757609
+        ]
+      },
+      "properties": {
+        "name": "Fatales Kairouan",
+        "address": "346, rue de la république El Abassia, 3100 Kairouan, Tunisia"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          10.9686367,
+          33.8176925
+        ]
+      },
+      "properties": {
+        "name": "Fatales Jerba",
+        "address": "Bourgou Mall, 4180 Jerba, Tunisia"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          11.0657166,
+          35.5042462
+        ]
+      },
+      "properties": {
+        "name": "Fatales Mahdia",
+        "address": "Avenue Habib Bourguiba Mahdia, 5100 Mahdia, Tunisia"
+      }
+    }
+  ]
+}
