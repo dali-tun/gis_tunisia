@@ -401,47 +401,94 @@ export function buildUI(gov, del, sec) {
   drawLegend();
   applyFilter();
   hideLoader();
-/* ===== Barre de recherche ===== */
+/* ui.js — interactions principales (version responsive + loader) */
+// ... (le reste du code reste inchangé)
+
+/* ===== Barre de recherche corrigée ===== */
 const searchInput = document.getElementById('searchInput');
-const searchList  = document.getElementById('searchList');
+const searchResults = document.getElementById('searchResults');
+
 if (searchInput) {
   searchInput.addEventListener('input', () => {
     const q = searchInput.value.trim().toLowerCase();
-    searchList.innerHTML = '';
-    if (q.length < 2) return;
-    const feats = (state.level === 'gov' ? gov.features : state.level === 'del' ? del.features : sec.features);
+    searchResults.innerHTML = '';
     
-const seen = new Set();
-const matches = [];
-for (const f of feats) {
-  const n = f.properties.LABEL;
-  if (!seen.has(n) && n.toLowerCase().includes(q)) {
-    seen.add(n);
-    matches.push(n);
-  }
-  if (matches.length >= 5) break;
-}
-
-    matches.forEach(n => {
-      const opt = document.createElement('option');
-      opt.value = n;
-      searchList.appendChild(opt);
-    });
+    if (q.length < 2) {
+      searchResults.classList.remove('visible');
+      return;
+    }
+    
+    const feats = state.level === 'gov' ? gov.features
+                 : state.level === 'del' ? del.features
+                 : sec.features;
+    
+    const seen = new Set();
+    const matches = [];
+    
+    for (const f of feats) {
+      const n = f.properties.LABEL;
+      if (!seen.has(n) && n.toLowerCase().includes(q)) {
+        seen.add(n);
+        matches.push({ name: n, feature: f });
+        if (matches.length >= 8) break;
+      }
+    }
+    
+    if (matches.length) {
+      searchResults.classList.add('visible');
+      matches.forEach(item => {
+        const div = document.createElement('div');
+        div.className = 'search-result-item';
+        
+        const icon = document.createElement('i');
+        icon.className = 'fas fa-map-marker-alt';
+        div.appendChild(icon);
+        
+        const text = document.createTextNode(item.name);
+        div.appendChild(text);
+        
+        div.onclick = () => {
+          const layer = findLayerByName(item.name);
+          if (layer) {
+            onSelect(layer, layer.feature);
+            map.fitBounds(layer.getBounds().pad(0.005));
+            document.body.classList.remove('hide-info');
+          }
+          searchResults.classList.remove('visible');
+        };
+        searchResults.appendChild(div);
+      });
+    } else {
+      const noResults = document.createElement('div');
+      noResults.className = 'search-result-item';
+      noResults.innerHTML = '<i class="fas fa-exclamation-circle"></i> Aucun résultat trouvé';
+      searchResults.appendChild(noResults);
+      searchResults.classList.add('visible');
+    }
   });
-  searchInput.addEventListener('change', () => {
-    const name = searchInput.value.trim();
-    if (!name) return;
-    let layers = state.level === 'gov' ? lyrGov : state.level === 'del' ? lyrDel : lyrSec;
-    let foundLayer = null;
-    layers.eachLayer(l => {
-      if (l.feature.properties.LABEL === name) foundLayer = l;
-    });
-    if (foundLayer) {
-      onSelect(foundLayer, foundLayer.feature);
-      map.fitBounds(foundLayer.getBounds().pad(0.005));
-          document.body.classList.remove('hide-info');
+  
+  // Fermer les résultats quand on clique ailleurs
+  document.addEventListener('click', (e) => {
+    if (!searchResults.contains(e.target) && e.target !== searchInput) {
+      searchResults.classList.remove('visible');
     }
   });
 }
+
+function findLayerByName(name) {
+  const grp = state.level === 'gov' ? lyrGov 
+            : state.level === 'del' ? lyrDel 
+            : lyrSec;
+  
+  let found = null;
+  grp.eachLayer(layer => {
+    if (layer.feature.properties.LABEL === name) {
+      found = layer;
+    }
+  });
+  return found;
+}
+
+// ... (le reste du code reste inchangé)
 
 }
