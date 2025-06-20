@@ -1,12 +1,13 @@
 <!DOCTYPE html>
 <html lang="fr">
+
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width,initial-scale=1">
   <title>Tunisie – Carte démographique moderne</title>
 
   <!-- Leaflet -->
-  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"/>
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
   <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
 
   <!-- Chart.js -->
@@ -18,6 +19,7 @@
   <!-- Styles -->
   <link rel="stylesheet" href="style.css">
 </head>
+
 <body>
   <!-- Loader overlay -->
   <div id="loader" class="loader hidden">
@@ -29,6 +31,9 @@
     <!-- Floating UI -->
     <div class="floating-ui">
       <div class="floating-card">
+        <!-- Bouton de fermeture -->
+        <button class="close-btn" aria-label="Fermer">&times;</button>
+
         <h4>Navigation rapide</h4>
         <p><i class="fas fa-mouse"></i> Utilisez Ctrl + Molette pour zoomer</p>
         <p><i class="fas fa-hand-pointer"></i> Cliquez sur une région pour les détails</p>
@@ -86,10 +91,14 @@
     <div class="filter-group filter-schools">
       <label><input type="checkbox" id="schoolsAll"> <i class="fas fa-school"></i> Établissements scolaires</label>
       <div id="schoolTypes">
-        <label><input type="checkbox" class="schoolTypeChk" data-type="E.PRIMAIRE"> <i class="fas fa-book"></i> Primaire</label>
-        <label><input type="checkbox" class="schoolTypeChk" data-type="E.PREP"> <i class="fas fa-graduation-cap"></i> Collège</label>
-        <label><input type="checkbox" class="schoolTypeChk" data-type="E.PREP.TECH"> <i class="fas fa-cogs"></i> Prépa Tech</label>
-        <label><input type="checkbox" class="schoolTypeChk" data-type="LYCEE"> <i class="fas fa-user-graduate"></i> Lycée</label>
+        <label><input type="checkbox" class="schoolTypeChk" data-type="E.PRIMAIRE"> <i class="fas fa-book"></i>
+          Primaire</label>
+        <label><input type="checkbox" class="schoolTypeChk" data-type="E.PREP"> <i class="fas fa-graduation-cap"></i>
+          Collège</label>
+        <label><input type="checkbox" class="schoolTypeChk" data-type="E.PREP.TECH"> <i class="fas fa-cogs"></i> Prépa
+          Tech</label>
+        <label><input type="checkbox" class="schoolTypeChk" data-type="LYCEE"> <i class="fas fa-user-graduate"></i>
+          Lycée</label>
       </div>
     </div>
 
@@ -99,8 +108,9 @@
   </div>
 
   <button id="toggleFilters" class="toggle-filters" title="Filtres"><i class="fas fa-sliders-h"></i></button>
-  <button id="toggleLegend" class="toggle-legend" title="Légende"><i class="fas fa-map-signs"></i></button>
-  <button id="toggleSidebar" class="toggle-sidebar" title="Afficher/masquer infos"><i class="fas fa-chevron-right"></i></button>
+  <!--button id="toggleLegend" class="toggle-legend" title="Légende"><i class="fas fa-map-signs"></i></button-->
+  <button id="toggleSidebar" class="toggle-sidebar" title="Afficher/masquer infos"><i
+      class="fas fa-chevron-right"></i></button>
 
   <script type="module" src="js/main.js"></script>
 
@@ -109,21 +119,21 @@
       const btnLegend = document.getElementById('toggleLegend');
       const btnSidebar = document.getElementById('toggleSidebar');
       const btnFilters = document.getElementById('toggleFilters');
-      
+
       if (btnLegend) {
         btnLegend.addEventListener('click', () => {
           document.body.classList.toggle('hide-legend');
         });
       }
-      
+
       if (btnSidebar) {
         btnSidebar.addEventListener('click', () => {
           document.body.classList.toggle('hide-info');
-          btnSidebar.innerHTML = document.body.classList.contains('hide-info') ? 
+          btnSidebar.innerHTML = document.body.classList.contains('hide-info') ?
             '<i class="fas fa-chevron-left"></i>' : '<i class="fas fa-chevron-right"></i>';
         });
       }
-      
+
       if (btnFilters) {
         btnFilters.addEventListener('click', () => {
           document.body.classList.toggle('show-filters');
@@ -132,4 +142,5 @@
     });
   </script>
 </body>
+
 </html>

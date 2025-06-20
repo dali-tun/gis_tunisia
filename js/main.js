@@ -203,3 +203,11 @@ document.addEventListener('DOMContentLoaded',()=>{
   const chk=document.getElementById('zonesIndToggle');
   chk?.addEventListener('change',e=>toggleZones(e.target.checked));
 });
+document.querySelectorAll('.close-btn').forEach(btn => {
+  btn.addEventListener('click', () => {
+    const floating = btn.closest('.floating-ui');
+    if (floating) {
+      floating.style.display = 'none';
+    }
+  });
+});
