@@ -40,6 +40,40 @@ document.addEventListener('DOMContentLoaded', () => {
       syncGlobalToggle();
     })
   );
+  
+  /* Navigation mobile */
+  const mobileFiltersBtn = document.getElementById('mobileFilters');
+  const mobileInfoBtn = document.getElementById('mobileInfo');
+  const mobileLegendBtn = document.getElementById('mobileLegend');
+  const mobileSearchBtn = document.getElementById('mobileSearch');
+  
+  if (mobileFiltersBtn) {
+    mobileFiltersBtn.addEventListener('click', () => {
+      document.body.classList.toggle('show-filters');
+      mobileFiltersBtn.classList.toggle('active');
+    });
+  }
+  
+  if (mobileInfoBtn) {
+    mobileInfoBtn.addEventListener('click', () => {
+      document.body.classList.toggle('hide-info');
+      mobileInfoBtn.classList.toggle('active');
+    });
+  }
+  
+  if (mobileLegendBtn) {
+    mobileLegendBtn.addEventListener('click', () => {
+      // Afficher la légende
+      mobileLegendBtn.classList.toggle('active');
+    });
+  }
+  
+  if (mobileSearchBtn) {
+    mobileSearchBtn.addEventListener('click', () => {
+      document.getElementById('searchInput').focus();
+      mobileSearchBtn.classList.toggle('active');
+    });
+  }
 });
 
 /* -------------------------------------------------
@@ -210,4 +244,38 @@ document.querySelectorAll('.close-btn').forEach(btn => {
       floating.style.display = 'none';
     }
   });
+});
+
+document.addEventListener('DOMContentLoaded', () => {
+  const toggleBtn = document.getElementById('toggleFilters');
+  const filtersPanel = document.getElementById('filters');
+  
+  if (toggleBtn && filtersPanel) {
+    // Basculer l'état des filtres
+    toggleBtn.addEventListener('click', () => {
+      document.body.classList.toggle('show-filters');
+    });
+    
+    // Fermer en cliquant à l'extérieur
+    document.addEventListener('click', (e) => {
+      const isClickInside = filtersPanel.contains(e.target);
+      const isToggleButton = e.target === toggleBtn || toggleBtn.contains(e.target);
+      
+      if (!isClickInside && !isToggleButton && document.body.classList.contains('show-filters')) {
+        document.body.classList.remove('show-filters');
+      }
+    });
+    
+    // Ajouter l'overlay
+    const overlay = document.createElement('div');
+    overlay.className = 'filter-overlay';
+    document.body.appendChild(overlay);
+    
+    // Fermer avec la touche ESC
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape' && document.body.classList.contains('show-filters')) {
+        document.body.classList.remove('show-filters');
+      }
+    });
+  }
 });
