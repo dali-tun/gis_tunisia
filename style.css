@@ -728,3 +728,43 @@ tr:hover {
     display: flex;
   }
 }
+/* ===== Legend fixes (automatically added) ===== */
+.legend-schools i{
+  display:inline-block;
+  width:14px;
+  height:14px;
+  border-radius:3px;
+  margin-right:6px;
+  vertical-align:middle;
+}
+
+.legend-zones ul{
+  list-style:none;
+  margin:4px 0;
+  padding:0;
+}
+.legend-zones li{
+  display:flex;
+  align-items:center;
+  margin-bottom:4px;
+}
+
+.legend-zones .legend-circle{
+  display:inline-block;
+  width:12px;
+  height:12px;
+  border-radius:50%;
+  background:#9c27b0; /* ZONES_COLOR */
+  border:1px solid rgba(255,255,255,0.3);
+  margin-right:6px;
+}
+
+.legend-zones .legend-center{
+  display:inline-block;
+  width:8px;
+  height:8px;
+  border-radius:50%;
+  background:#ff9800; /* ZONES_CENTER */
+  border:1px solid rgba(255,255,255,0.3);
+  margin-right:6px;
+}
