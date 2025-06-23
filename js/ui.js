@@ -1,9 +1,9 @@
 /* ui.js — interactions principales (version responsive + loader) */
-import { female, male, safe } from './utils.js';
+import { ageMid, female, male, safe } from './utils.js';
 import { palAge, youngBands } from './constants.js';
-import { state }              from './state.js';
-import { mkLayer, styleOf }   from './mapLayers.js';
-import { mkDens }             from './loader.js';
+import { state } from './state.js';
+import { mkLayer, styleOf } from './mapLayers.js';
+import { mkDens } from './loader.js';
 
 /*--------------------------------------------------
   Utilitaires
@@ -16,7 +16,7 @@ function refreshLayer(group) {
   });
 }
 const showLoader = (txt = 'Chargement…') => window.showLoader?.(txt);
-const hideLoader = ()                    => window.hideLoader?.();
+const hideLoader = () => window.hideLoader?.();
 
 /*--------------------------------------------------
   Point d’entrée (appelé par main.js)
@@ -207,6 +207,7 @@ export function buildUI(gov, del, sec) {
 
     /* Histogramme Chart.js */
     setTimeout(() => {
+      if(chart){chart.destroy();}
       const ctx = document.getElementById('ageChart').getContext('2d');
       chart = new Chart(ctx, {
         type : 'bar',
@@ -277,67 +278,88 @@ export function buildUI(gov, del, sec) {
   }
 
   /* ===== Filtres ===== */
-  const selAge = document.getElementById('ageFil');
   const selLvl = document.getElementById('levelSel');
   const selCol = document.getElementById('colorSel');
   const btnR   = document.getElementById('resetFil');
 
-  function match(dist, crit) {
-    if (!crit) return true;
-    if (!dist) return false;
+  // === Contrôles âge & sexe ===
 
-    let total = 0, jeunes = 0, vieux = 0, fem = 0, hom = 0;
-    for (const band in dist) {
-      const m = male(dist[band]);
-      const f = female(dist[band]);
-      total += m + f;
-      
-      if (youngBands.includes(band)) {
-        jeunes += m + f;
+  const chkMale     = document.getElementById('chkMale');
+  const chkFemale   = document.getElementById('chkFemale');
+
+  function updateAgeDisplay(){
+    ageMinVal.textContent = ageMinInput.value;
+    ageMaxVal.textContent = ageMaxInput.value;
+    const min = +ageMinInput.value, max = +ageMaxInput.value;
+    const pctMin = min/80*100, pctMax = max/80*100;
+    const grad = `linear-gradient(to right,#ddd ${pctMin}%,var(--accent-color) ${pctMin}%,var(--accent-color) ${pctMax}%,#ddd ${pctMax}%)`;
+    ageMinInput.style.background = grad;
+    ageMaxInput.style.background = grad;
+  }
+
+// Remplacer toute la section des sliders dans buildUI()
+const ageMinInput = document.getElementById('ageMin');
+const ageMaxInput = document.getElementById('ageMax');
+const ageMinVal = document.getElementById('ageMinVal');
+const ageMaxVal = document.getElementById('ageMaxVal');
+const sliderTrack = document.querySelector('.slider-track'); // Nouvel élément
+
+function updateSlider() {
+  const minVal = parseInt(ageMinInput.value);
+  const maxVal = parseInt(ageMaxInput.value);
+  
+  // Mettre à jour l'affichage des valeurs
+  ageMinVal.textContent = minVal;
+  ageMaxVal.textContent = maxVal;
+  
+  // Calculer la position en pourcentage
+  const minPercent = (minVal / 80) * 100;
+  const maxPercent = (maxVal / 80) * 100;
+  
+  // Mettre à jour la barre de progression
+  sliderTrack.style.background = `linear-gradient(to right, 
+    #ddd 0%, 
+    #ddd ${minPercent}%, 
+    var(--accent-color) ${minPercent}%, 
+    var(--accent-color) ${maxPercent}%, 
+    #ddd ${maxPercent}%, 
+    #ddd 100%)`;
+}
+
+// Initialisation
+updateSlider();
+
+// Événements
+[ageMinInput, ageMaxInput].forEach(input => {
+  input.addEventListener('input', () => {
+    let minVal = parseInt(ageMinInput.value);
+    let maxVal = parseInt(ageMaxInput.value);
+    
+    if (minVal > maxVal) {
+      if (input === ageMinInput) {
+        ageMinInput.value = maxVal;
+        minVal = maxVal;
       } else {
-        vieux += m + f;
+        ageMaxInput.value = minVal;
+        maxVal = minVal;
       }
-      
-      fem += f;
-      hom += m;
     }
-    if (total === 0) return false;
-
-    return crit === 'jeunes'  ? jeunes / total > 0.5
-         : crit === 'vieux'   ? vieux  / total > 0.5
-         : crit === 'femmes'  ? fem    / total > 0.5
-         : crit === 'hommes'  ? hom    / total > 0.5
-         : true;
-  }
-
-  function applyFilter() {
-    showLoader('Filtrage…');
-    const crit   = selAge.value;
-    const grp    = state.level === 'gov' ? lyrGov
-                  : state.level === 'del' ? lyrDel
-                  : lyrSec;
-    const baseO  = state.level === 'sec' ? 0.9 : 0.85;
-
-    grp.eachLayer(l => {
-      const visible = match(l.feature.properties.DIST, crit);
-      l.options._filtered = !visible;
-      l.setStyle({
-        ...l.options._base,
-        fillOpacity: visible ? baseO : 0,
-        opacity    : visible ? 1    : 0
-      });
-      if (!visible && l === state.selected) {
-        if (l._path) l._path.classList.remove('selected');
-        state.selected = null;
-      }
-    });
-
-    if (!state.selected) setTimeout(autoSelect, 20);
-    setTimeout(hideLoader, 150);
-  }
-
-  selAge.onchange = applyFilter;
-  btnR.onclick    = () => { selAge.value = ''; applyFilter(); };
+    
+    updateSlider();
+    applyFilter();
+  });
+});
+  
+  chkMale.addEventListener('change',applyFilter);
+  chkFemale.addEventListener('change',applyFilter);
+  updateAgeDisplay();
+  
+  btnR.onclick = () => {
+    ageMinInput.value=0;ageMaxInput.value=80;
+    chkMale.checked=true;chkFemale.checked=true;
+    updateAgeDisplay();
+    applyFilter();
+  };
 
   /* ===== Changement de niveau ===== */
   selLvl.onchange = e => {
@@ -346,7 +368,6 @@ export function buildUI(gov, del, sec) {
     [lyrGov, lyrDel, lyrSec].forEach(refreshLayer);
     if (state.selected && state.selected._path) state.selected._path.classList.remove('selected');
     state.selected = null;
-    selAge.value   = '';
 
     /* nouvelle palette */
     state.level  = e.target.value;
@@ -486,4 +507,58 @@ export function buildUI(gov, del, sec) {
   drawLegend();
   applyFilter();
   hideLoader();
+
+  function applyFilter(){
+    showLoader('Filtrage…');
+    const minAge = +ageMinInput.value;
+    const maxAge = +ageMaxInput.value;
+    const includeMale = chkMale.checked;
+    const includeFemale = chkFemale.checked;
+
+    if(!includeMale && !includeFemale){
+      [lyrGov,lyrDel,lyrSec].forEach(g=>g.eachLayer(l=>{
+        l.options._filtered=true;
+        l.setStyle({...l.options._base,fillOpacity:0,opacity:0});
+      }));
+      state.selected=null;
+      setTimeout(() => {
+        autoSelect();
+        hideLoader();
+      }, 150);
+      return;
+    }
+
+    const grp = state.level==='gov'?lyrGov:state.level==='del'?lyrDel:lyrSec;
+    const baseO = state.level==='sec'?0.9:0.85;
+
+    grp.eachLayer(l=>{
+      const p = l.feature.properties;
+      const median = p.MED_AGE;
+      let sexOk=false;
+      if(includeMale && includeFemale) sexOk=true;
+      else{
+        let m=0,f=0;
+        if(p.DIST) for(const b in p.DIST){
+          m += male(p.DIST[b]);
+          f += female(p.DIST[b]);
+        }
+        const tot=m+f;
+        if(tot){
+          if(includeMale && !includeFemale) sexOk=m/tot>0.5;
+          if(!includeMale && includeFemale) sexOk=f/tot>0.5;
+        }
+      }
+      const ageOk = Number.isFinite(median) && median>=minAge && median<=maxAge;
+      const visible = ageOk && sexOk;
+      l.options._filtered = !visible;
+      l.setStyle({...l.options._base,fillOpacity:visible?baseO:0,opacity:visible?1:0});
+      if(!visible && l===state.selected){ 
+        if(l._path) l._path.classList.remove('selected'); 
+        state.selected=null; 
+      }
+    });
+
+    if(!state.selected) setTimeout(autoSelect,20);
+    setTimeout(hideLoader,150);
+  }
 }

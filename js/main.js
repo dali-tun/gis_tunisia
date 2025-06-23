@@ -41,37 +41,36 @@ document.addEventListener('DOMContentLoaded', () => {
     })
   );
   
-  /* Navigation mobile */
-  const mobileFiltersBtn = document.getElementById('mobileFilters');
-  const mobileInfoBtn = document.getElementById('mobileInfo');
-  const mobileLegendBtn = document.getElementById('mobileLegend');
-  const mobileSearchBtn = document.getElementById('mobileSearch');
+  document.querySelectorAll('.close-btn').forEach(btn => {
+    btn.addEventListener('click', () => {
+      const floating = btn.closest('.floating-ui');
+      if (floating) {
+        floating.style.display = 'none';
+      }
+    });
+  });
+
+  const toggleBtn = document.getElementById('toggleFilters');
+  const filtersPanel = document.getElementById('filters');
   
-  if (mobileFiltersBtn) {
-    mobileFiltersBtn.addEventListener('click', () => {
+  if (toggleBtn && filtersPanel) {
+    toggleBtn.addEventListener('click', () => {
       document.body.classList.toggle('show-filters');
-      mobileFiltersBtn.classList.toggle('active');
     });
-  }
-  
-  if (mobileInfoBtn) {
-    mobileInfoBtn.addEventListener('click', () => {
-      document.body.classList.toggle('hide-info');
-      mobileInfoBtn.classList.toggle('active');
+    
+    document.addEventListener('click', (e) => {
+      const isClickInside = filtersPanel.contains(e.target);
+      const isToggleButton = e.target === toggleBtn || toggleBtn.contains(e.target);
+      
+      if (!isClickInside && !isToggleButton && document.body.classList.contains('show-filters')) {
+        document.body.classList.remove('show-filters');
+      }
     });
-  }
-  
-  if (mobileLegendBtn) {
-    mobileLegendBtn.addEventListener('click', () => {
-      // Afficher la légende
-      mobileLegendBtn.classList.toggle('active');
-    });
-  }
-  
-  if (mobileSearchBtn) {
-    mobileSearchBtn.addEventListener('click', () => {
-      document.getElementById('searchInput').focus();
-      mobileSearchBtn.classList.toggle('active');
+    
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape' && document.body.classList.contains('show-filters')) {
+        document.body.classList.remove('show-filters');
+      }
     });
   }
 });
@@ -221,61 +220,31 @@ function ensureZonesLayer(){
       }});
       if(!zonesLegendCtrl){
         zonesLegendCtrl=L.control({position:'bottomleft'});
-        zonesLegendCtrl.onAdd=()=>{const d=L.DomUtil.create('div','info legend legend-zones');d.innerHTML='<strong>Zones industrielles</strong><ul><li><span class="legend-circle"></span>Petite</li><li><span class="legend-circle" style="width:16px;height:16px;"></span>Moyenne</li><li><span class="legend-circle" style="width:24px;height:24px;"></span>Grande</li></ul><div><span class="legend-center"></span>Centre</div>';return d;};
+        zonesLegendCtrl.onAdd=()=>{
+          const d=L.DomUtil.create('div','info legend legend-zones');
+          d.innerHTML='<strong>Zones industrielles</strong><ul><li><span class="legend-circle"></span>Petite</li><li><span class="legend-circle" style="width:16px;height:16px;"></span>Moyenne</li><li><span class="legend-circle" style="width:24px;height:24px;"></span>Grande</li></ul><div><span class="legend-center"></span>Centre</div>';
+          return d;
+        };
       }
     })
     .finally(hideLoader);
   return zonesDataPromise;
 }
+
 function toggleZones(show){
   ensureZonesLayer().then(()=>{
     if(!zonesLayer) return;
-    if(show){ zonesLayer.addTo(window.map); zonesLegendCtrl.addTo(window.map); } else { window.map.removeLayer(zonesLayer); zonesLegendCtrl.remove(); }
+    if(show){ 
+      zonesLayer.addTo(window.map); 
+      zonesLegendCtrl.addTo(window.map); 
+    } else { 
+      window.map.removeLayer(zonesLayer); 
+      zonesLegendCtrl.remove(); 
+    }
   });
 }
+
 document.addEventListener('DOMContentLoaded',()=>{
   const chk=document.getElementById('zonesIndToggle');
   chk?.addEventListener('change',e=>toggleZones(e.target.checked));
-});
-document.querySelectorAll('.close-btn').forEach(btn => {
-  btn.addEventListener('click', () => {
-    const floating = btn.closest('.floating-ui');
-    if (floating) {
-      floating.style.display = 'none';
-    }
-  });
-});
-
-document.addEventListener('DOMContentLoaded', () => {
-  const toggleBtn = document.getElementById('toggleFilters');
-  const filtersPanel = document.getElementById('filters');
-  
-  if (toggleBtn && filtersPanel) {
-    // Basculer l'état des filtres
-    toggleBtn.addEventListener('click', () => {
-      document.body.classList.toggle('show-filters');
-    });
-    
-    // Fermer en cliquant à l'extérieur
-    document.addEventListener('click', (e) => {
-      const isClickInside = filtersPanel.contains(e.target);
-      const isToggleButton = e.target === toggleBtn || toggleBtn.contains(e.target);
-      
-      if (!isClickInside && !isToggleButton && document.body.classList.contains('show-filters')) {
-        document.body.classList.remove('show-filters');
-      }
-    });
-    
-    // Ajouter l'overlay
-    const overlay = document.createElement('div');
-    overlay.className = 'filter-overlay';
-    document.body.appendChild(overlay);
-    
-    // Fermer avec la touche ESC
-    document.addEventListener('keydown', (e) => {
-      if (e.key === 'Escape' && document.body.classList.contains('show-filters')) {
-        document.body.classList.remove('show-filters');
-      }
-    });
-  }
 });
