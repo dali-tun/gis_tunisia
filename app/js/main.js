@@ -93,7 +93,7 @@ function ensureSchoolLayers(){
   if(schoolsDataPromise) return schoolsDataPromise;
 
   showLoader('Chargement des établissements…');
-  schoolsDataPromise = fetch('./etab_scolaires.geojson')
+  schoolsDataPromise = fetch('../../etab_scolaires.geojson')
     .then(resp => {
       if(!resp.ok) throw new Error('Fichier établissements introuvable');
       return resp.json();
@@ -203,7 +203,7 @@ let zonesLayer=null, zonesLegendCtrl=null, zonesDataPromise=null;
 function ensureZonesLayer(){
   if(zonesDataPromise) return zonesDataPromise;
   showLoader('Chargement zones industrielles…');
-  zonesDataPromise = fetch('./zonesindustrielles.geojson')
+  zonesDataPromise = fetch('../../zonesindustrielles.geojson')
     .then(r=>{if(!r.ok) throw new Error('GeoJSON non trouvé'); return r.json()})
     .then(data=>{
       const areas = data.features.map(f=>parseFloat(String(f.properties['المساحة (هك)']??0).replace(',','.'))||0).filter(a=>a>0).sort((a,b)=>a-b);

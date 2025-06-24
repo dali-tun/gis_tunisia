@@ -868,3 +868,22 @@ tr:hover {
 .age-slider .age-range{z-index:1;}
 #ageMin{z-index:2;}
 #ageMax{z-index:3;}
+
+/* Bouton retour au site principal */
+.return-site{
+  position:fixed;
+  top:12px;
+  left:12px;
+  background:#00ffcc;
+  color:#0f0c29;
+  padding:8px 16px;
+  border-radius:30px;
+  font-weight:600;
+  text-decoration:none;
+  z-index:2000;
+  transition:.3s;
+}
+.return-site:hover{transform:translateY(-3px);}
+@media (max-width:600px){
+  .return-site{padding:6px 12px;font-size:.85rem;}
+}

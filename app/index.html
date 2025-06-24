@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="fr">
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>Tunisie – Carte démographique moderne</title>
+
+  <!-- Leaflet -->
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+
+  <!-- Chart.js -->
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+  <!-- Font Awesome -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+  <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+<a href="../index.html" class="return-site">← Retour au site</a>
+  <div id="app-container">
+    <!-- Loader overlay -->
+    <div id="loader" class="loader hidden">
+      <div class="spinner"></div>
+      <div class="loading-text">Chargement…</div>
+    </div>
+
+    <!-- Map Container -->
+    <div id="map-container">
+      <div id="map"></div>
+
+      <!-- Floating UI -->
+      <div class="floating-ui">
+        <div class="floating-card">
+          <button class="close-btn" aria-label="Fermer">&times;</button>
+          <h4>Navigation rapide</h4>
+          <p><i class="fas fa-mouse"></i> Utilisez Ctrl + Molette pour zoomer</p>
+          <p><i class="fas fa-hand-pointer"></i> Cliquez sur une région pour les détails</p>
+          <p><i class="fas fa-layer-group"></i> Changez de niveau dans les filtres</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- Info Panel -->
+    <div id="info-panel">
+      <div id="info">…</div>
+    </div>
+  </div>
+
+  <!-- Filtres -->
+  <div id="filters">
+    <div class="filter-group search-container">
+      <div class="search-wrapper">
+        <input type="text" id="searchInput" placeholder="Rechercher un lieu...">
+        <div id="searchResults" class="search-results"></div>
+        <div class="search-icon"><i class="fas fa-search"></i></div>
+      </div>
+    </div>
+
+    <div class="filter-group">
+      <label for="levelSel"><i class="fas fa-layer-group"></i> Niveau :</label>
+      <select id="levelSel">
+        <option value="gov"><i class="fas fa-landmark"></i> Gouvernorat</option>
+        <option value="del"><i class="fas fa-city"></i> Délégation</option>
+        <option value="sec"><i class="fas fa-map-marker-alt"></i> Secteur</option>
+      </select>
+    </div>
+
+    <div class="filter-group">
+      <label for="colorSel"><i class="fas fa-palette"></i> Coloration :</label>
+      <select id="colorSel">
+        <option value="density"><i class="fas fa-users"></i> Densité</option>
+        <option value="age"><i class="fas fa-chart-bar"></i> Âge médian</option>
+      </select>
+    </div>
+
+    <!-- Tranche d'âge -->
+    <div class="filter-group" id="ageRangeGroup">
+      <label><i class="fas fa-filter"></i> Âge mediane :</label>
+      <div class="age-slider">
+        <div class="slider-track"></div> <!-- Nouvel élément -->
+        <input type="range" id="ageMin" min="0" max="80" step="1" value="0" class="age-range">
+        <input type="range" id="ageMax" min="0" max="80" step="1" value="80" class="age-range">
+        <div class="age-values"><span id="ageMinVal">0</span> – <span id="ageMaxVal">80</span> ans</div>
+      </div>
+    </div>
+
+    <!-- Sexe -->
+    <div class="filter-group" id="genderGroup">
+      <label><i class="fas fa-venus-mars"></i> Sexe :</label>
+      <div class="gender-options">
+        <label><input type="checkbox" id="chkMale" checked> Hommes</label>
+        <label><input type="checkbox" id="chkFemale" checked> Femmes</label>
+      </div>
+    </div>
+
+    <!-- Établissements scolaires -->
+    <div class="filter-group" id="schoolsGroup">
+      <label><i class="fas fa-school"></i> Établissements :</label>
+      <label class="toggle-all">
+        <input type="checkbox" id="schoolsAll"> Tous les types
+      </label>
+      <div class="school-types">
+        <label><input type="checkbox" class="schoolTypeChk" data-type="E.PRIMAIRE"> Primaires</label>
+        <label><input type="checkbox" class="schoolTypeChk" data-type="E.PREP"> Collèges</label>
+        <label><input type="checkbox" class="schoolTypeChk" data-type="E.PREP.TECH"> Prépa tech.</label>
+        <label><input type="checkbox" class="schoolTypeChk" data-type="LYCEE"> Lycées</label>
+      </div>
+    </div>
+
+    <!-- Zones industrielles -->
+    <div class="filter-group" id="zonesGroup">
+      <label><i class="fas fa-industry"></i> Zones industrielles :</label>
+      <label class="toggle-all">
+        <input type="checkbox" id="zonesIndToggle"> Afficher
+      </label>
+    </div>
+
+    <div class="filter-actions">
+      <button id="resetFil"><i class="fas fa-sync-alt"></i> Réinitialiser</button>
+    </div>
+  </div>
+
+  <!-- Toggle buttons -->
+  <button id="toggleFilters" class="toggle-filters" title="Filtres"><i class="fas fa-sliders-h"></i></button>
+  <button id="toggleSidebar" class="toggle-sidebar" title="Afficher/masquer infos"><i
+      class="fas fa-chevron-right"></i></button>
+
+  <script type="module" src="js/main.js"></script>
+</body>
+
+</html>
